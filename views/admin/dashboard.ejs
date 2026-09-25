@@ -566,11 +566,11 @@
 
                                     <td>
 
-                                        <form
-                                            action="/admin/users/<%= adminUser.id %>/toggle-status"
-                                            method="POST"
-                                            onsubmit="return confirm('Are you sure you want to <%= adminUser.is_active ? 'deactivate' : 'activate' %> this user?');"
-                                        >
+                                          <form
+                                              action="/admin/users/<%= adminUser.id %>/toggle-status"
+                                              method="POST"
+                                              onsubmit="return confirm('Are you sure you want to change this user account status?');"
+                                          >
 
                                             <% if (adminUser.is_active) { %>
 
