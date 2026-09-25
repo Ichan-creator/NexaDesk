@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>NexaDesk | My Tickets</title>
+
+  <link rel="stylesheet" href="/css/base.css">
+  <link rel="stylesheet" href="/css/sidebar.css">
+  <link rel="stylesheet" href="/css/topbar.css">
+  <link rel="stylesheet" href="/css/tickets.css">
+  <link rel="stylesheet" href="/css/responsive.css">
+
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+  >
+</head>
+
+<body>
+
+<aside class="sidebar" id="sidebar">
+
+  <div class="sidebar-logo">
+    <h2>Nexa<span>Desk</span></h2>
+  </div>
+
+  <nav class="sidebar-nav">
+
+    <div class="nav-label">Workspace</div>
+
+    <a href="/dashboard" class="nav-item">
+      <i class="fa-solid fa-chart-line"></i>
+      Dashboard
+    </a>
+
+    <a href="/tickets" class="nav-item active">
+      <i class="fa-solid fa-ticket"></i>
+      My Tickets
+    </a>
+
+    <a href="/tickets/new" class="nav-item">
+      <i class="fa-solid fa-plus"></i>
+      New Ticket
+    </a>
+
+    <a href="/knowledge-base" class="nav-item">
+      <i class="fa-solid fa-book"></i>
+      Knowledge Base
+    </a>
+
+    <div class="nav-label" style="margin-top:25px;">
+      Account
+    </div>
+
+    <a href="/profile" class="nav-item">
+      <i class="fa-solid fa-user"></i>
+      Profile
+    </a>
+
+    <a href="/notifications" class="nav-item">
+      <i class="fa-solid fa-bell"></i>
+      Notifications
+    </a>
+
+    <% if (user && user.role === "admin") { %>
+
+      <div class="nav-label" style="margin-top:25px;">
+        Administration
+      </div>
+
+      <a href="/admin" class="nav-item">
+        <i class="fa-solid fa-shield-halved"></i>
+        Admin Dashboard
+      </a>
+
+    <% } %>
+
+    <form action="/logout" method="POST" style="margin-top:15px;">
+      <button
+        type="submit"
+        class="nav-item"
+        style="width:100%; border:none; background:transparent; text-align:left;"
+      >
+        <i class="fa-solid fa-right-from-bracket"></i>
+        Logout
+      </button>
+    </form>
+
+  </nav>
+
+</aside>
+
+
+<header class="topbar">
+
+  <button
+    class="mobile-menu"
+    id="mobileMenu"
+    type="button"
+  >
+    <i class="fa-solid fa-bars"></i>
+  </button>
+
+  <div class="topbar-search">
+    <i class="fa-solid fa-magnifying-glass"></i>
+
+    <input
+      type="text"
+      id="globalSearch"
+      placeholder="Search tickets..."
+    >
+  </div>
+
+  <div class="topbar-right">
+
+    <a href="/notifications" class="topbar-icon">
+      <i class="fa-regular fa-bell"></i>
+      <span class="notification-dot"></span>
+    </a>
+
+    <div class="topbar-user">
+
+      <div class="topbar-avatar">
+        <%= user.fullName
+          .split(" ")
+          .map(name => name[0])
+          .slice(0,2)
+          .join("")
+          .toUpperCase() %>
+      </div>
+
+      <div class="topbar-user-info">
+        <strong><%= user.fullName %></strong>
+        <span><%= user.department %></span>
+      </div>
+
+    </div>
+
+  </div>
+
+</header>
+
+
+<main class="main-content">
+
+  <div class="page-container">
+
+    <div class="page-header">
+
+      <h1>My Tickets</h1>
+
+      <p>
+        View and manage your IT support requests.
+      </p>
+
+    </div>
+
+
+    <% if (success) { %>
+      <div class="alert alert-success">
+        <%= success %>
+      </div>
+    <% } %>
+
+    <% if (error) { %>
+      <div class="alert alert-error">
+        <%= error %>
+      </div>
+    <% } %>
+
+
+    <!-- TOOLBAR -->
+    <form
+      action="/tickets"
+      method="GET"
+      class="ticket-toolbar"
+    >
+
+      <div class="ticket-search">
+
+        <i class="fa-solid fa-magnifying-glass"></i>
+
+        <input
+          type="text"
+          id="ticketSearch"
+          name="search"
+          value="<%= search || '' %>"
+          placeholder="Search tickets..."
+        >
+
+      </div>
+
+
+      <select
+        id="statusFilter"
+        name="status"
+        class="ticket-filter"
+      >
+
+        <option value="">
+          All Status
+        </option>
+
+        <option
+          value="Open"
+          <%= status === "Open" ? "selected" : "" %>
+        >
+          Open
+        </option>
+
+        <option
+          value="In Progress"
+          <%= status === "In Progress" ? "selected" : "" %>
+        >
+          In Progress
+        </option>
+
+        <option
+          value="Resolved"
+          <%= status === "Resolved" ? "selected" : "" %>
+        >
+          Resolved
+        </option>
+
+        <option
+          value="Closed"
+          <%= status === "Closed" ? "selected" : "" %>
+        >
+          Closed
+        </option>
+
+      </select>
+
+
+      <select
+        id="priorityFilter"
+        name="priority"
+        class="ticket-filter"
+      >
+
+        <option value="">
+          All Priority
+        </option>
+
+        <option
+          value="Low"
+          <%= priority === "Low" ? "selected" : "" %>
+        >
+          Low
+        </option>
+
+        <option
+          value="Medium"
+          <%= priority === "Medium" ? "selected" : "" %>
+        >
+          Medium
+        </option>
+
+        <option
+          value="High"
+          <%= priority === "High" ? "selected" : "" %>
+        >
+          High
+        </option>
+
+        <option
+          value="Urgent"
+          <%= priority === "Urgent" ? "selected" : "" %>
+        >
+          Urgent
+        </option>
+
+      </select>
+
+
+      <button
+        type="button"
+        id="clearFilters"
+        class="btn btn-secondary"
+      >
+        <i class="fa-solid fa-filter-circle-xmark"></i>
+        Clear
+      </button>
+
+
+      <a href="/tickets/new" class="btn btn-primary">
+        <i class="fa-solid fa-plus"></i>
+        New Ticket
+      </a>
+
+    </form>
+
+
+    <!-- TABLE -->
+    <div class="ticket-table-card">
+
+      <% if (tickets && tickets.length > 0) { %>
+
+        <table class="ticket-table">
+
+          <thead>
+
+            <tr>
+              <th>Ticket</th>
+              <th>Subject</th>
+              <th>Category</th>
+              <th>Priority</th>
+              <th>Status</th>
+              <th>Created</th>
+            </tr>
+
+          </thead>
+
+          <tbody>
+
+            <% tickets.forEach(ticket => { %>
+
+              <tr class="ticket-row-searchable">
+
+                <td>
+
+                  <a
+                    href="/tickets/<%= ticket.id %>"
+                    class="ticket-number"
+                  >
+                    <%= ticket.ticket_number %>
+                  </a>
+
+                </td>
+
+                <td>
+
+                  <a
+                    href="/tickets/<%= ticket.id %>"
+                    class="ticket-subject"
+                  >
+                    <%= ticket.subject %>
+                  </a>
+
+                </td>
+
+                <td>
+                  <%= ticket.category %>
+                </td>
+
+                <td>
+
+                  <span
+                    class="badge
+                    <%= ticket.priority === 'Low'
+                      ? 'priority-low'
+                      : ticket.priority === 'Medium'
+                      ? 'priority-medium'
+                      : ticket.priority === 'High'
+                      ? 'priority-high'
+                      : 'priority-urgent' %>"
+                  >
+                    <%= ticket.priority %>
+                  </span>
+
+                </td>
+
+                <td>
+
+                  <span
+                    class="badge
+                    <%= ticket.status === 'Open'
+                      ? 'status-open'
+                      : ticket.status === 'In Progress'
+                      ? 'status-progress'
+                      : ticket.status === 'Resolved'
+                      ? 'status-resolved'
+                      : 'status-closed' %>"
+                  >
+                    <%= ticket.status %>
+                  </span>
+
+                </td>
+
+                <td>
+                  <%= new Date(ticket.created_at).toLocaleDateString() %>
+                </td>
+
+              </tr>
+
+            <% }) %>
+
+          </tbody>
+
+        </table>
+
+      <% } else { %>
+
+        <div class="empty-state">
+
+          <i class="fa-solid fa-ticket"></i>
+
+          <h3>
+            No tickets found
+          </h3>
+
+          <p>
+            You don't have any tickets matching your search.
+          </p>
+
+          <br>
+
+          <a href="/tickets/new" class="btn btn-primary">
+            <i class="fa-solid fa-plus"></i>
+            Create Ticket
+          </a>
+
+        </div>
+
+      <% } %>
+
+    </div>
+
+  </div>
+
+</main>
+
+
+<script src="/js/main.js"></script>
+<script src="/js/tickets.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,1058 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>NexaDesk | Admin Dashboard</title>
+
+    <link
+        rel="stylesheet"
+        href="/css/base.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="/css/sidebar.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="/css/topbar.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="/css/admin.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="/css/responsive.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+
+</head>
+
+
+<body>
+
+
+<!-- ================================
+     SIDEBAR
+     ================================ -->
+
+<aside
+    class="sidebar"
+    id="sidebar"
+>
+
+    <div class="sidebar-logo">
+
+        <h2>
+            Nexa<span>Desk</span>
+        </h2>
+
+    </div>
+
+
+    <nav class="sidebar-nav">
+
+
+        <!-- ================================
+             ADMINISTRATION
+             ================================ -->
+
+        <div class="nav-label">
+            Administration
+        </div>
+
+
+        <a
+            href="/admin"
+            class="nav-item active"
+        >
+
+            <i class="fa-solid fa-shield-halved"></i>
+
+            Admin Dashboard
+
+        </a>
+
+
+        <!-- ================================
+             LOGOUT
+             ================================ -->
+
+        <form
+            action="/logout"
+            method="POST"
+            style="margin-top:15px;"
+        >
+
+            <button
+                type="submit"
+                class="nav-item"
+                style="
+                    width:100%;
+                    border:none;
+                    background:transparent;
+                    text-align:left;
+                    cursor:pointer;
+                "
+            >
+
+                <i class="fa-solid fa-right-from-bracket"></i>
+
+                Logout
+
+            </button>
+
+        </form>
+
+
+    </nav>
+
+</aside>
+
+
+
+<!-- ================================
+     TOPBAR
+     ================================ -->
+
+<header class="topbar">
+
+    <button
+        class="mobile-menu"
+        id="mobileMenu"
+        type="button"
+    >
+
+        <i class="fa-solid fa-bars"></i>
+
+    </button>
+
+
+    <div class="topbar-search">
+
+        <i class="fa-solid fa-magnifying-glass"></i>
+
+        <input
+            type="text"
+            id="globalSearch"
+            placeholder="Search tickets..."
+        >
+
+    </div>
+
+
+    <div class="topbar-right">
+
+
+        <div class="topbar-user">
+
+            <div class="topbar-avatar">
+
+                <%= user.fullName
+                    .split(" ")
+                    .map(name => name[0])
+                    .slice(0,2)
+                    .join("")
+                    .toUpperCase()
+                %>
+
+            </div>
+
+
+            <div class="topbar-user-info">
+
+                <strong>
+                    <%= user.fullName %>
+                </strong>
+
+                <span>
+                    Administrator
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</header>
+
+
+
+<!-- ================================
+     MAIN CONTENT
+     ================================ -->
+
+<main class="main-content">
+
+    <div class="page-container">
+
+
+        <!-- ================================
+             ADMIN BANNER
+             ================================ -->
+
+        <section class="admin-banner">
+
+            <h1>
+
+                <i class="fa-solid fa-shield-halved"></i>
+
+                Administration Dashboard
+
+            </h1>
+
+
+            <p>
+                Monitor and manage NexaDesk service desk activity.
+            </p>
+
+        </section>
+
+
+
+        <!-- ================================
+             STATS
+             ================================ -->
+
+        <div class="admin-stats">
+
+
+            <!-- TOTAL USERS -->
+
+            <div class="stat-card">
+
+                <div class="stat-top">
+
+                    <span class="stat-label">
+                        Total Users
+                    </span>
+
+
+                    <div class="stat-icon">
+
+                        <i class="fa-solid fa-users"></i>
+
+                    </div>
+
+                </div>
+
+
+                <div class="stat-number">
+
+                    <%= stats.users || users.length || 0 %>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- TOTAL TICKETS -->
+
+            <div class="stat-card">
+
+                <div class="stat-top">
+
+                    <span class="stat-label">
+                        Total Tickets
+                    </span>
+
+
+                    <div class="stat-icon">
+
+                        <i class="fa-solid fa-ticket"></i>
+
+                    </div>
+
+                </div>
+
+
+                <div class="stat-number">
+
+                    <%= stats.tickets || stats.total || 0 %>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- OPEN TICKETS -->
+
+            <div class="stat-card">
+
+                <div class="stat-top">
+
+                    <span class="stat-label">
+                        Open Tickets
+                    </span>
+
+
+                    <div class="stat-icon">
+
+                        <i class="fa-solid fa-folder-open"></i>
+
+                    </div>
+
+                </div>
+
+
+                <div class="stat-number">
+
+                    <%= stats.open || 0 %>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- RESOLVED -->
+
+            <div class="stat-card">
+
+                <div class="stat-top">
+
+                    <span class="stat-label">
+                        Resolved
+                    </span>
+
+
+                    <div class="stat-icon">
+
+                        <i class="fa-solid fa-circle-check"></i>
+
+                    </div>
+
+                </div>
+
+
+                <div class="stat-number">
+
+                    <%= stats.resolved || 0 %>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- ================================
+             USERS
+             ================================ -->
+
+        <section class="admin-table-card">
+
+
+            <div class="section-header">
+
+                <h2>
+
+                    <i class="fa-solid fa-users"></i>
+
+                    Users
+
+                </h2>
+
+            </div>
+
+
+
+            <div style="padding:18px;">
+
+                <input
+                    type="text"
+                    id="adminSearch"
+                    class="form-control"
+                    placeholder="Search users..."
+                >
+
+            </div>
+
+
+
+            <% if (users && users.length > 0) { %>
+
+
+                <div style="overflow-x:auto;">
+
+                    <table class="admin-table">
+
+
+                        <thead>
+
+                            <tr>
+
+                                <th>
+                                    User
+                                </th>
+
+                                <th>
+                                    Department
+                                </th>
+
+                                <th>
+                                    Role
+                                </th>
+
+                                <th>
+                                    Status
+                                </th>
+
+                                <th>
+                                    Created
+                                </th>
+
+                                <th>
+                                    Action
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+
+                        <tbody>
+
+
+                            <% users.forEach(adminUser => { %>
+
+
+                                <tr class="admin-searchable">
+
+
+                                    <!-- USER -->
+
+                                    <td>
+
+                                        <div class="admin-user">
+
+
+                                            <div class="admin-avatar">
+
+                                                <%= adminUser.full_name
+                                                    .split(" ")
+                                                    .map(name => name[0])
+                                                    .slice(0,2)
+                                                    .join("")
+                                                    .toUpperCase()
+                                                %>
+
+                                            </div>
+
+
+                                            <div>
+
+                                                <strong>
+                                                    <%= adminUser.full_name %>
+                                                </strong>
+
+
+                                                <div
+                                                    style="
+                                                        color:#64748b;
+                                                        font-size:12px;
+                                                    "
+                                                >
+
+                                                    <%= adminUser.email %>
+
+                                                </div>
+
+                                            </div>
+
+
+                                        </div>
+
+                                    </td>
+
+
+
+                                    <!-- DEPARTMENT -->
+
+                                    <td>
+
+                                        <%= adminUser.department %>
+
+                                    </td>
+
+
+
+                                    <!-- ROLE -->
+
+                                    <td>
+
+                                        <span class="badge">
+
+                                            <%= adminUser.role %>
+
+                                        </span>
+
+                                    </td>
+
+
+
+                                    <!-- STATUS -->
+
+                                    <td>
+
+                                        <% if (adminUser.is_active) { %>
+
+                                            <span class="badge status-resolved">
+
+                                                <i class="fa-solid fa-circle-check"></i>
+
+                                                Active
+
+                                            </span>
+
+                                        <% } else { %>
+
+                                            <span class="badge status-closed">
+
+                                                <i class="fa-solid fa-circle-xmark"></i>
+
+                                                Inactive
+
+                                            </span>
+
+                                        <% } %>
+
+                                    </td>
+
+
+
+                                    <!-- CREATED -->
+
+                                    <td>
+
+                                        <%= adminUser.created_at
+
+                                            ? new Date(
+                                                adminUser.created_at
+                                            ).toLocaleDateString()
+
+                                            : "—"
+
+                                        %>
+
+                                    </td>
+
+
+
+                                    <!-- ACTION -->
+
+                                    <td>
+
+                                        <form
+                                            action="/admin/users/<%= adminUser.id %>/toggle-status"
+                                            method="POST"
+                                            onsubmit="return confirm('Are you sure you want to <%= adminUser.is_active ? 'deactivate' : 'activate' %> this user?');"
+                                        >
+
+                                            <% if (adminUser.is_active) { %>
+
+                                                <button
+                                                    type="submit"
+                                                    class="user-status-button deactivate"
+                                                >
+
+                                                    <i class="fa-solid fa-user-slash"></i>
+
+                                                    Deactivate
+
+                                                </button>
+
+                                            <% } else { %>
+
+                                                <button
+                                                    type="submit"
+                                                    class="user-status-button activate"
+                                                >
+
+                                                    <i class="fa-solid fa-user-check"></i>
+
+                                                    Activate
+
+                                                </button>
+
+                                            <% } %>
+
+                                        </form>
+
+                                    </td>
+
+
+                                </tr>
+
+
+                            <% }) %>
+
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+
+            <% } else { %>
+
+
+                <div class="empty-state">
+
+                    <i class="fa-solid fa-users"></i>
+
+                    <h3>
+                        No users found
+                    </h3>
+
+                </div>
+
+
+            <% } %>
+
+
+        </section>
+
+
+
+        <!-- ================================
+             USER TICKETS
+             ================================ -->
+
+        <section
+            class="admin-table-card admin-section-spacing"
+        >
+
+
+            <div class="section-header">
+
+                <h2>
+
+                    <i class="fa-solid fa-ticket"></i>
+
+                    User Tickets
+
+                </h2>
+
+            </div>
+
+
+
+            <div style="padding:18px;">
+
+                <input
+                    type="text"
+                    id="ticketSearch"
+                    class="form-control"
+                    placeholder="Search tickets, users, departments..."
+                >
+
+            </div>
+
+
+
+            <% if (tickets && tickets.length > 0) { %>
+
+
+                <div style="overflow-x:auto;">
+
+                    <table class="admin-table">
+
+
+                        <thead>
+
+                            <tr>
+
+                                <th>
+                                    Ticket
+                                </th>
+
+                                <th>
+                                    User
+                                </th>
+
+                                <th>
+                                    Message
+                                </th>
+
+                                <th>
+                                    Priority
+                                </th>
+
+                                <th>
+                                    Status
+                                </th>
+
+                                <th>
+                                    Updated
+                                </th>
+
+                                <th>
+                                    Action
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+
+                        <tbody>
+
+
+                            <% tickets.forEach(ticket => { %>
+
+
+                                <tr class="ticket-searchable">
+
+
+                                    <!-- TICKET -->
+
+                                    <td>
+
+                                        <div class="ticket-number">
+
+                                            <%= ticket.ticket_number %>
+
+                                        </div>
+
+
+                                        <div class="ticket-subject">
+
+                                            <%= ticket.subject || "No subject" %>
+
+                                        </div>
+
+                                    </td>
+
+
+
+                                    <!-- USER -->
+
+                                    <td>
+
+                                        <div class="ticket-user">
+
+
+                                            <div class="ticket-user-avatar">
+
+                                                <%= ticket.full_name
+
+                                                    .split(" ")
+
+                                                    .map(name => name[0])
+
+                                                    .slice(0,2)
+
+                                                    .join("")
+
+                                                    .toUpperCase()
+
+                                                %>
+
+                                            </div>
+
+
+                                            <div class="ticket-user-info">
+
+                                                <strong>
+
+                                                    <%= ticket.full_name %>
+
+                                                </strong>
+
+
+                                                <span>
+
+                                                    <%= ticket.department %>
+
+                                                </span>
+
+                                            </div>
+
+
+                                        </div>
+
+                                    </td>
+
+
+
+                                    <!-- MESSAGE -->
+
+                                    <td>
+
+                                        <div class="ticket-message-preview">
+
+                                            <p>
+
+                                                <%= ticket.description
+                                                    || ticket.message
+                                                    || ticket.content
+                                                    || "No message provided."
+                                                %>
+
+                                            </p>
+
+                                        </div>
+
+                                    </td>
+
+
+
+                                    <!-- PRIORITY -->
+
+                                    <td>
+
+                                        <span
+                                            class="ticket-priority
+                                            <%= String(ticket.priority || '').toLowerCase() === 'high'
+                                                ? 'priority-high'
+                                                : String(ticket.priority || '').toLowerCase() === 'medium'
+                                                    ? 'priority-medium'
+                                                    : 'priority-low'
+                                            %>"
+                                        >
+
+                                            <%= ticket.priority || "Normal" %>
+
+                                        </span>
+
+                                    </td>
+
+
+
+                                    <!-- STATUS -->
+
+                                    <td>
+
+                                        <span
+                                            class="ticket-status
+                                            <%= String(ticket.status || '').toLowerCase() === 'open'
+                                                ? 'open'
+                                                : String(ticket.status || '').toLowerCase() === 'in progress'
+                                                    ? 'progress'
+                                                    : String(ticket.status || '').toLowerCase() === 'resolved'
+                                                        ? 'resolved'
+                                                        : 'closed'
+                                            %>"
+                                        >
+
+                                            <%= ticket.status || "Open" %>
+
+                                        </span>
+
+                                    </td>
+
+
+
+                                    <!-- UPDATED -->
+
+                                    <td>
+
+                                        <%= ticket.updated_at
+
+                                            ? new Date(
+                                                ticket.updated_at
+                                            ).toLocaleDateString()
+
+                                            : "—"
+
+                                        %>
+
+                                    </td>
+
+
+
+                                    <!-- ACTION -->
+
+                                    <td>
+
+                                        <div class="ticket-actions">
+
+                                            <a
+                                                href="/admin/tickets/<%= ticket.id %>"
+                                                class="ticket-view-button"
+                                            >
+
+                                                <i class="fa-solid fa-comments"></i>
+
+                                                View & Reply
+
+                                            </a>
+
+                                        </div>
+
+                                    </td>
+
+
+                                </tr>
+
+
+                            <% }) %>
+
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+
+            <% } else { %>
+
+
+                <div class="empty-state">
+
+                    <i class="fa-solid fa-ticket"></i>
+
+                    <h3>
+                        No tickets found
+                    </h3>
+
+                    <p>
+                        User tickets will appear here when they are submitted.
+                    </p>
+
+                </div>
+
+
+            <% } %>
+
+
+        </section>
+
+
+    </div>
+
+</main>
+
+
+
+<script src="/js/main.js"></script>
+
+<script src="/js/admin.js"></script>
+
+
+
+<script>
+
+// ========================================
+// TICKET SEARCH
+// ========================================
+
+const ticketSearch =
+    document.getElementById("ticketSearch");
+
+
+if (ticketSearch) {
+
+    ticketSearch.addEventListener(
+        "input",
+        function () {
+
+            const search =
+                this.value
+                    .toLowerCase()
+                    .trim();
+
+
+            const rows =
+                document.querySelectorAll(
+                    ".ticket-searchable"
+                );
+
+
+            rows.forEach(row => {
+
+                const text =
+                    row.textContent.toLowerCase();
+
+
+                row.style.display =
+                    text.includes(search)
+                        ? ""
+                        : "none";
+
+            });
+
+        }
+    );
+
+}
+
+
+
+// ========================================
+// USER SEARCH
+// ========================================
+
+const adminSearch =
+    document.getElementById("adminSearch");
+
+
+if (adminSearch) {
+
+    adminSearch.addEventListener(
+        "input",
+        function () {
+
+            const search =
+                this.value
+                    .toLowerCase()
+                    .trim();
+
+
+            const rows =
+                document.querySelectorAll(
+                    ".admin-searchable"
+                );
+
+
+            rows.forEach(row => {
+
+                const text =
+                    row.textContent.toLowerCase();
+
+
+                row.style.display =
+                    text.includes(search)
+                        ? ""
+                        : "none";
+
+            });
+
+        }
+    );
+
+}
+
+</script>
+
+
+</body>
+
+</html>

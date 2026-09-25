@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NexaDesk | Create Account</title>
+
+  <link rel="stylesheet" href="/css/base.css">
+  <link rel="stylesheet" href="/css/auth.css">
+  <link rel="stylesheet" href="/css/responsive.css">
+
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+  >
+</head>
+
+<body>
+
+<div class="auth-page">
+
+  <section class="auth-brand">
+
+    <h1>Nexa<span>Desk</span></h1>
+
+    <p>
+      Create your account and start managing your IT support
+      requests through one centralized service desk.
+    </p>
+
+    <div class="auth-features">
+
+      <div class="auth-feature">
+        <i class="fa-solid fa-user-check"></i>
+        <span>Simple account management</span>
+      </div>
+
+      <div class="auth-feature">
+        <i class="fa-solid fa-headset"></i>
+        <span>Submit IT support requests</span>
+      </div>
+
+      <div class="auth-feature">
+        <i class="fa-solid fa-clock-rotate-left"></i>
+        <span>Track your support history</span>
+      </div>
+
+    </div>
+
+  </section>
+
+  <section class="auth-panel">
+
+    <div class="auth-card">
+
+      <div class="auth-card-header">
+        <h2>Create account</h2>
+        <p>Register your NexaDesk account.</p>
+      </div>
+
+      <% if (error) { %>
+        <div class="alert alert-error">
+          <%= error %>
+        </div>
+      <% } %>
+
+      <form
+        action="/register"
+        method="POST"
+        id="registerForm"
+      >
+
+        <div class="form-group">
+          <label for="full_name">Full Name</label>
+
+          <input
+            type="text"
+            id="full_name"
+            name="full_name"
+            class="form-control"
+            placeholder="Christian Aquino"
+            required
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="register-email">Email Address</label>
+
+          <input
+            type="email"
+            id="register-email"
+            name="email"
+            class="form-control"
+            placeholder="you@example.com"
+            required
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="department">Department</label>
+
+          <select
+            id="department"
+            name="department"
+            class="form-control"
+            required
+          >
+            <option value="">Select department</option>
+            <option>Business Development</option>
+            <option>Finance</option>
+            <option>Human Resources</option>
+            <option>Information Technology</option>
+            <option>Marketing</option>
+            <option>QMS</option>
+            <option>Regulatory</option>
+            <option>Sales</option>
+            <option>Trade</option>
+            <option>Vaccine</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="register-password">Password</label>
+
+          <input
+            type="password"
+            id="register-password"
+            name="password"
+            class="form-control"
+            placeholder="Minimum 8 characters"
+            minlength="8"
+            required
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="confirm_password">Confirm Password</label>
+
+          <input
+            type="password"
+            id="confirm_password"
+            name="confirm_password"
+            class="form-control"
+            placeholder="Confirm your password"
+            minlength="8"
+            required
+          >
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="width:100%;">
+          <i class="fa-solid fa-user-plus"></i>
+          Create Account
+        </button>
+
+      </form>
+
+      <div class="auth-footer">
+        Already have an account?
+        <a href="/login">Sign in</a>
+      </div>
+
+    </div>
+
+  </section>
+
+</div>
+
+<script src="/js/auth.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,151 @@
+.welcome-card {
+  background: linear-gradient(135deg, #1e3a8a, #2563eb);
+  color: white;
+  border-radius: 16px;
+  padding: 28px;
+  margin-bottom: 25px;
+  position: relative;
+  overflow: hidden;
+}
+
+.welcome-card::after {
+  content: "";
+  position: absolute;
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.08);
+  right: -50px;
+  top: -70px;
+}
+
+.welcome-card h1 {
+  font-size: 25px;
+  margin-bottom: 5px;
+}
+
+.welcome-card p {
+  color: #dbeafe;
+}
+
+.dashboard-actions {
+  margin-top: 20px;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+  margin-bottom: 25px;
+}
+
+.stat-card {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: var(--shadow);
+}
+
+.stat-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.stat-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  background: var(--primary-light);
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.stat-number {
+  font-size: 27px;
+  font-weight: 800;
+  color: var(--dark);
+  margin-top: 12px;
+}
+
+.stat-label {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 22px;
+}
+
+.section-card {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.section-header {
+  padding: 18px 20px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.section-header h2 {
+  font-size: 16px;
+  color: var(--dark);
+}
+
+.section-header a {
+  color: var(--primary);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.ticket-row {
+  padding: 17px 20px;
+  border-bottom: 1px solid #f1f5f9;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+}
+
+.ticket-row:last-child {
+  border-bottom: none;
+}
+
+.ticket-info h3 {
+  font-size: 14px;
+  margin-bottom: 4px;
+}
+
+.ticket-info p {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.notification-item {
+  padding: 16px 20px;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.notification-item:last-child {
+  border-bottom: none;
+}
+
+.notification-item strong {
+  display: block;
+  margin-bottom: 3px;
+}
+
+.notification-item p {
+  font-size: 12px;
+  color: var(--muted);
+}

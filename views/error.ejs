@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>NexaDesk | <%= title || "Error" %></title>
+
+  <link rel="stylesheet" href="/css/base.css">
+  <link rel="stylesheet" href="/css/auth.css">
+  <link rel="stylesheet" href="/css/responsive.css">
+
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+  >
+</head>
+
+<body>
+
+<div class="auth-page">
+
+  <div class="auth-brand">
+
+    <h1>Nexa<span>Desk</span></h1>
+
+    <p>
+      IT Service Desk Management System
+    </p>
+
+  </div>
+
+
+  <div class="auth-panel">
+
+    <div class="auth-card" style="text-align:center;">
+
+      <div
+        style="
+          width:70px;
+          height:70px;
+          margin:0 auto 20px;
+          border-radius:50%;
+          background:#fee2e2;
+          color:#dc2626;
+          display:flex;
+          align-items:center;
+          justify-content:center;
+          font-size:28px;
+        "
+      >
+        <i class="fa-solid fa-triangle-exclamation"></i>
+      </div>
+
+      <div class="auth-card-header">
+
+        <h2>
+          <%= title || "Something went wrong" %>
+        </h2>
+
+        <p>
+          <%= message || "An unexpected error occurred." %>
+        </p>
+
+      </div>
+
+      <a
+        href="/dashboard"
+        class="btn btn-primary"
+        style="width:100%;"
+      >
+        <i class="fa-solid fa-house"></i>
+        Back to Dashboard
+      </a>
+
+    </div>
+
+  </div>
+
+</div>
+
+</body>
+</html>
