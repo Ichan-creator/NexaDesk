@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>NexaDesk | Create Ticket</title>
+
+  <link rel="stylesheet" href="/css/base.css">
+  <link rel="stylesheet" href="/css/sidebar.css">
+  <link rel="stylesheet" href="/css/topbar.css">
+  <link rel="stylesheet" href="/css/create-ticket.css">
+  <link rel="stylesheet" href="/css/responsive.css">
+
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+  >
+</head>
+
+<body>
+
+<aside class="sidebar" id="sidebar">
+
+  <div class="sidebar-logo">
+    <h2>Nexa<span>Desk</span></h2>
+  </div>
+
+  <nav class="sidebar-nav">
+
+    <div class="nav-label">Workspace</div>
+
+    <a href="/dashboard" class="nav-item">
+      <i class="fa-solid fa-chart-line"></i>
+      Dashboard
+    </a>
+
+    <a href="/tickets" class="nav-item">
+      <i class="fa-solid fa-ticket"></i>
+      My Tickets
+    </a>
+
+    <a href="/tickets/new" class="nav-item active">
+      <i class="fa-solid fa-plus"></i>
+      New Ticket
+    </a>
+
+    <a href="/knowledge-base" class="nav-item">
+      <i class="fa-solid fa-book"></i>
+      Knowledge Base
+    </a>
+
+    <div class="nav-label" style="margin-top:25px;">
+      Account
+    </div>
+
+    <a href="/profile" class="nav-item">
+      <i class="fa-solid fa-user"></i>
+      Profile
+    </a>
+
+    <a href="/notifications" class="nav-item">
+      <i class="fa-solid fa-bell"></i>
+      Notifications
+    </a>
+
+    <% if (user && user.role === "admin") { %>
+      <a href="/admin" class="nav-item">
+        <i class="fa-solid fa-shield-halved"></i>
+        Admin Dashboard
+      </a>
+    <% } %>
+
+    <form action="/logout" method="POST" style="margin-top:15px;">
+      <button
+        type="submit"
+        class="nav-item"
+        style="width:100%; border:none; background:transparent; text-align:left;"
+      >
+        <i class="fa-solid fa-right-from-bracket"></i>
+        Logout
+      </button>
+    </form>
+
+  </nav>
+
+</aside>
+
+
+<header class="topbar">
+
+  <button
+    class="mobile-menu"
+    id="mobileMenu"
+    type="button"
+  >
+    <i class="fa-solid fa-bars"></i>
+  </button>
+
+  <div class="topbar-search">
+
+    <i class="fa-solid fa-magnifying-glass"></i>
+
+    <input
+      type="text"
+      id="globalSearch"
+      placeholder="Search tickets..."
+    >
+
+  </div>
+
+  <div class="topbar-right">
+
+    <a href="/notifications" class="topbar-icon">
+      <i class="fa-regular fa-bell"></i>
+    </a>
+
+    <div class="topbar-user">
+
+      <div class="topbar-avatar">
+        <%= user.fullName
+          .split(" ")
+          .map(name => name[0])
+          .slice(0,2)
+          .join("")
+          .toUpperCase() %>
+      </div>
+
+      <div class="topbar-user-info">
+        <strong><%= user.fullName %></strong>
+        <span><%= user.department %></span>
+      </div>
+
+    </div>
+
+  </div>
+
+</header>
+
+
+<main class="main-content">
+
+  <div class="page-container">
+
+    <div class="page-header">
+
+      <h1>Create Support Ticket</h1>
+
+      <p>
+        Tell us about the technical issue you're experiencing.
+      </p>
+
+    </div>
+
+
+    <% if (error) { %>
+      <div class="alert alert-error">
+        <%= error %>
+      </div>
+    <% } %>
+
+
+    <div class="create-ticket-layout">
+
+
+      <!-- FORM -->
+      <section class="form-card">
+
+        <h2>
+          <i class="fa-solid fa-ticket"></i>
+          Ticket Information
+        </h2>
+
+        <form
+          action="/tickets"
+          method="POST"
+          id="createTicketForm"
+        >
+
+          <div class="form-group">
+
+            <label for="subject">
+              Subject
+            </label>
+
+            <input
+              type="text"
+              id="subject"
+              name="subject"
+              class="form-control"
+              placeholder="Example: Cannot connect to company Wi-Fi"
+              maxlength="180"
+              required
+            >
+
+          </div>
+
+
+          <div class="form-row">
+
+            <div class="form-group">
+
+              <label for="category">
+                Category
+              </label>
+
+              <select
+                id="category"
+                name="category"
+                class="form-control"
+                required
+              >
+
+                <option value="">
+                  Select category
+                </option>
+
+                <option value="Hardware">
+                  Hardware
+                </option>
+
+                <option value="Software">
+                  Software
+                </option>
+
+                <option value="Network">
+                  Network
+                </option>
+
+                <option value="Account">
+                  Account / Access
+                </option>
+
+                <option value="Email">
+                  Email
+                </option>
+
+                <option value="Printer">
+                  Printer
+                </option>
+
+                <option value="Security">
+                  Security
+                </option>
+
+                <option value="Other">
+                  Other
+                </option>
+
+              </select>
+
+            </div>
+
+
+            <div class="form-group">
+
+              <label for="priority">
+                Priority
+              </label>
+
+              <select
+                id="priority"
+                name="priority"
+                class="form-control"
+                required
+              >
+
+                <option value="Low">
+                  Low
+                </option>
+
+                <option value="Medium" selected>
+                  Medium
+                </option>
+
+                <option value="High">
+                  High
+                </option>
+
+                <option value="Urgent">
+                  Urgent
+                </option>
+
+              </select>
+
+            </div>
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label for="description">
+              Description
+            </label>
+
+            <textarea
+              id="description"
+              name="description"
+              class="form-control"
+              placeholder="Describe the problem, what happened, and any troubleshooting steps you have already tried..."
+              required
+            ></textarea>
+
+            <small
+              id="descriptionCounter"
+              style="color:#94a3b8;"
+            >
+              0 characters
+            </small>
+
+          </div>
+
+
+          <div style="display:flex; gap:10px; justify-content:flex-end;">
+
+            <a
+              href="/tickets"
+              class="btn btn-secondary"
+            >
+              Cancel
+            </a>
+
+            <button
+              type="submit"
+              class="btn btn-primary"
+            >
+              <i class="fa-solid fa-paper-plane"></i>
+              Submit Ticket
+            </button>
+
+          </div>
+
+        </form>
+
+      </section>
+
+
+      <!-- HELP -->
+      <aside class="help-card">
+
+        <h3>
+          <i class="fa-solid fa-lightbulb"></i>
+          Before submitting
+        </h3>
+
+        <ul>
+
+          <li>
+            Describe the issue clearly.
+          </li>
+
+          <li>
+            Include any error messages you received.
+          </li>
+
+          <li>
+            Mention when the problem started.
+          </li>
+
+          <li>
+            Tell IT what troubleshooting steps you already tried.
+          </li>
+
+          <li>
+            Do not include passwords or sensitive information.
+          </li>
+
+        </ul>
+
+      </aside>
+
+    </div>
+
+  </div>
+
+</main>
+
+
+<script src="/js/main.js"></script>
+<script src="/js/create-ticket.js"></script>
+
+</body>
+</html>

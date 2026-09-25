@@ -1,0 +1,81 @@
+.ticket-toolbar {
+  background: white;
+  padding: 18px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  margin-bottom: 20px;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.ticket-search {
+  flex: 1;
+  position: relative;
+}
+
+.ticket-search i {
+  position: absolute;
+  left: 13px;
+  top: 12px;
+  color: var(--muted);
+}
+
+.ticket-search input {
+  width: 100%;
+  padding: 10px 12px 10px 38px;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  outline: none;
+}
+
+.ticket-filter {
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  background: white;
+  outline: none;
+}
+
+.ticket-table-card {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.ticket-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.ticket-table th {
+  background: #f8fafc;
+  text-align: left;
+  padding: 14px 18px;
+  color: var(--muted);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: .5px;
+}
+
+.ticket-table td {
+  padding: 17px 18px;
+  border-top: 1px solid #f1f5f9;
+  vertical-align: middle;
+}
+
+.ticket-number {
+  color: var(--primary);
+  font-weight: 700;
+  font-size: 12px;
+}
+
+.ticket-subject {
+  font-weight: 600;
+  color: var(--dark);
+}
+
+.ticket-subject:hover {
+  color: var(--primary);
+}

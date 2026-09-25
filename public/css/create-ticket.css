@@ -1,0 +1,45 @@
+.create-ticket-layout {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 22px;
+}
+
+.form-card {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 25px;
+}
+
+.form-card h2 {
+  font-size: 18px;
+  margin-bottom: 22px;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.help-card {
+  background: #eff6ff;
+  border: 1px solid #dbeafe;
+  border-radius: 12px;
+  padding: 22px;
+  height: fit-content;
+}
+
+.help-card h3 {
+  color: #1e40af;
+  margin-bottom: 12px;
+}
+
+.help-card ul {
+  padding-left: 20px;
+  color: #475569;
+}
+
+.help-card li {
+  margin-bottom: 10px;
+}

@@ -1,0 +1,1022 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>NexaDesk | Knowledge Base</title>
+
+  <link rel="stylesheet" href="/css/base.css">
+  <link rel="stylesheet" href="/css/sidebar.css">
+  <link rel="stylesheet" href="/css/topbar.css">
+  <link rel="stylesheet" href="/css/knowledge-base.css">
+  <link rel="stylesheet" href="/css/responsive.css">
+
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+  >
+</head>
+
+<body>
+
+<!-- =========================
+     SIDEBAR
+========================= -->
+
+<aside class="sidebar" id="sidebar">
+
+  <div class="sidebar-logo">
+    <h2>Nexa<span>Desk</span></h2>
+  </div>
+
+  <nav class="sidebar-nav">
+
+    <div class="nav-label">
+      Workspace
+    </div>
+
+    <a
+      href="/dashboard"
+      class="nav-item <%= currentPath === '/dashboard' ? 'active' : '' %>"
+    >
+      <i class="fa-solid fa-chart-line"></i>
+      Dashboard
+    </a>
+
+    <a
+      href="/tickets"
+      class="nav-item <%= currentPath.startsWith('/tickets') && currentPath !== '/tickets/new' ? 'active' : '' %>"
+    >
+      <i class="fa-solid fa-ticket"></i>
+      My Tickets
+    </a>
+
+    <a
+      href="/tickets/new"
+      class="nav-item <%= currentPath === '/tickets/new' ? 'active' : '' %>"
+    >
+      <i class="fa-solid fa-plus"></i>
+      New Ticket
+    </a>
+
+    <a
+      href="/knowledge-base"
+      class="nav-item active"
+    >
+      <i class="fa-solid fa-book"></i>
+      Knowledge Base
+    </a>
+
+    <div
+      class="nav-label"
+      style="margin-top:25px;"
+    >
+      Account
+    </div>
+
+    <a
+      href="/profile"
+      class="nav-item <%= currentPath.startsWith('/profile') ? 'active' : '' %>"
+    >
+      <i class="fa-solid fa-user"></i>
+      Profile
+    </a>
+
+    <a
+      href="/notifications"
+      class="nav-item <%= currentPath.startsWith('/notifications') ? 'active' : '' %>"
+    >
+      <i class="fa-solid fa-bell"></i>
+      Notifications
+    </a>
+
+    <form
+      action="/logout"
+      method="POST"
+      style="margin-top:15px;"
+    >
+      <button
+        type="submit"
+        class="nav-item"
+        style="
+          width:100%;
+          border:none;
+          background:transparent;
+          text-align:left;
+          cursor:pointer;
+        "
+      >
+        <i class="fa-solid fa-right-from-bracket"></i>
+        Logout
+      </button>
+    </form>
+
+  </nav>
+
+  <div class="sidebar-user">
+
+    <div class="sidebar-user-info">
+
+      <div class="sidebar-avatar">
+        <%= user.fullName
+          .split(" ")
+          .map(name => name[0])
+          .slice(0,2)
+          .join("")
+          .toUpperCase()
+        %>
+      </div>
+
+      <div class="sidebar-user-text">
+        <strong>
+          <%= user.fullName %>
+        </strong>
+
+        <small>
+          <%= user.role %>
+        </small>
+      </div>
+
+    </div>
+
+  </div>
+
+</aside>
+
+
+<!-- =========================
+     TOPBAR
+========================= -->
+
+<header class="topbar">
+
+  <button
+    class="mobile-menu"
+    id="mobileMenu"
+    type="button"
+  >
+    <i class="fa-solid fa-bars"></i>
+  </button>
+
+  <div class="topbar-search">
+
+    <i class="fa-solid fa-magnifying-glass"></i>
+
+    <input
+      type="text"
+      id="globalSearch"
+      placeholder="Search tickets..."
+    >
+
+  </div>
+
+  <div class="topbar-right">
+
+    <a
+      href="/notifications"
+      class="topbar-icon"
+      aria-label="Notifications"
+    >
+      <i class="fa-regular fa-bell"></i>
+      <span class="notification-dot"></span>
+    </a>
+
+    <div class="topbar-user">
+
+      <div class="topbar-avatar">
+        <%= user.fullName
+          .split(" ")
+          .map(name => name[0])
+          .slice(0,2)
+          .join("")
+          .toUpperCase()
+        %>
+      </div>
+
+      <div class="topbar-user-info">
+
+        <strong>
+          <%= user.fullName %>
+        </strong>
+
+        <span>
+          <%= user.department %>
+        </span>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</header>
+
+
+<!-- =========================
+     MAIN CONTENT
+========================= -->
+
+<main class="main-content">
+
+  <div class="page-container">
+
+    <!-- PAGE HEADER -->
+
+    <section class="kb-hero">
+
+      <div class="kb-hero-content">
+
+        <div class="kb-hero-icon">
+          <i class="fa-solid fa-book-open"></i>
+        </div>
+
+        <div>
+
+          <h1>
+            Knowledge Base
+          </h1>
+
+          <p>
+            Find helpful guides and solutions for common IT problems.
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <!-- KNOWLEDGE BASE SEARCH -->
+
+      <div class="kb-search">
+
+        <i class="fa-solid fa-magnifying-glass"></i>
+
+        <input
+          type="text"
+          id="knowledgeSearch"
+          placeholder="Search the entire knowledge base..."
+          autocomplete="off"
+        >
+
+        <button
+          type="button"
+          id="clearSearch"
+          class="clear-search"
+          aria-label="Clear search"
+        >
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+
+      </div>
+
+      <div class="search-hint">
+        Search by article title, category, keyword, or solution.
+      </div>
+
+    </section>
+
+
+    <!-- =========================
+         CATEGORIES
+    ========================= -->
+
+    <section class="kb-section">
+
+      <div class="kb-section-header">
+
+        <div>
+          <span class="section-eyebrow">
+            Browse
+          </span>
+
+          <h2>
+            Browse by Category
+          </h2>
+
+          <p>
+            Select a category to find related support articles.
+          </p>
+        </div>
+
+        <button
+          type="button"
+          class="all-articles-btn active"
+          data-category="all"
+        >
+          <i class="fa-solid fa-layer-group"></i>
+          All Articles
+        </button>
+
+      </div>
+
+
+      <div class="category-grid">
+
+        <button
+          type="button"
+          class="category-card"
+          data-category="Hardware"
+        >
+          <div class="category-icon">
+            <i class="fa-solid fa-laptop"></i>
+          </div>
+
+          <div class="category-content">
+            <h3>Hardware</h3>
+            <p>Computer and device problems</p>
+            <span>
+              <span class="category-count" data-count="Hardware">0</span>
+              articles
+            </span>
+          </div>
+
+          <i class="fa-solid fa-arrow-right category-arrow"></i>
+        </button>
+
+
+        <button
+          type="button"
+          class="category-card"
+          data-category="Software"
+        >
+          <div class="category-icon">
+            <i class="fa-solid fa-window-maximize"></i>
+          </div>
+
+          <div class="category-content">
+            <h3>Software</h3>
+            <p>Applications and system issues</p>
+            <span>
+              <span class="category-count" data-count="Software">0</span>
+              articles
+            </span>
+          </div>
+
+          <i class="fa-solid fa-arrow-right category-arrow"></i>
+        </button>
+
+
+        <button
+          type="button"
+          class="category-card"
+          data-category="Network"
+        >
+          <div class="category-icon">
+            <i class="fa-solid fa-network-wired"></i>
+          </div>
+
+          <div class="category-content">
+            <h3>Network</h3>
+            <p>Internet and connectivity issues</p>
+            <span>
+              <span class="category-count" data-count="Network">0</span>
+              articles
+            </span>
+          </div>
+
+          <i class="fa-solid fa-arrow-right category-arrow"></i>
+        </button>
+
+
+        <button
+          type="button"
+          class="category-card"
+          data-category="Email"
+        >
+          <div class="category-icon">
+            <i class="fa-solid fa-envelope"></i>
+          </div>
+
+          <div class="category-content">
+            <h3>Email</h3>
+            <p>Email and account problems</p>
+            <span>
+              <span class="category-count" data-count="Email">0</span>
+              articles
+            </span>
+          </div>
+
+          <i class="fa-solid fa-arrow-right category-arrow"></i>
+        </button>
+
+
+        <button
+          type="button"
+          class="category-card"
+          data-category="Security"
+        >
+          <div class="category-icon">
+            <i class="fa-solid fa-shield-halved"></i>
+          </div>
+
+          <div class="category-content">
+            <h3>Security</h3>
+            <p>Security and account protection</p>
+            <span>
+              <span class="category-count" data-count="Security">0</span>
+              articles
+            </span>
+          </div>
+
+          <i class="fa-solid fa-arrow-right category-arrow"></i>
+        </button>
+
+
+        <button
+          type="button"
+          class="category-card"
+          data-category="Access"
+        >
+          <div class="category-icon">
+            <i class="fa-solid fa-key"></i>
+          </div>
+
+          <div class="category-content">
+            <h3>Access</h3>
+            <p>Passwords and system access</p>
+            <span>
+              <span class="category-count" data-count="Access">0</span>
+              articles
+            </span>
+          </div>
+
+          <i class="fa-solid fa-arrow-right category-arrow"></i>
+        </button>
+
+      </div>
+
+    </section>
+
+
+    <!-- =========================
+         ARTICLES
+    ========================= -->
+
+    <section class="kb-section">
+
+      <div class="kb-section-header article-header">
+
+        <div>
+
+          <span class="section-eyebrow">
+            Support Articles
+          </span>
+
+          <h2 id="articleSectionTitle">
+            All Knowledge Base Articles
+          </h2>
+
+          <p id="articleResultText">
+            Browse available IT support guides.
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <div
+        class="articles-grid"
+        id="articlesGrid"
+      >
+
+        <!-- ARTICLE 1 -->
+
+        <article
+          class="article-card"
+          data-category="Hardware"
+          data-title="Computer won't turn on"
+          data-keywords="computer laptop desktop power boot startup hardware won't turn on"
+          data-content="power button computer laptop desktop startup boot battery charger"
+        >
+
+          <div class="article-card-top">
+
+            <span class="article-category hardware">
+              Hardware
+            </span>
+
+            <i class="fa-solid fa-laptop article-icon"></i>
+
+          </div>
+
+          <h3>
+            Computer Won't Turn On
+          </h3>
+
+          <p>
+            Steps to check when a computer or laptop does not power on.
+          </p>
+
+          <div class="article-footer">
+
+            <span>
+              <i class="fa-regular fa-clock"></i>
+              3 min read
+            </span>
+
+            <span class="read-article">
+              Read article
+              <i class="fa-solid fa-arrow-right"></i>
+            </span>
+
+          </div>
+
+        </article>
+
+
+        <!-- ARTICLE 2 -->
+
+        <article
+          class="article-card"
+          data-category="Hardware"
+          data-title="Printer troubleshooting"
+          data-keywords="printer printing print paper jam offline hardware"
+          data-content="printer offline paper jam print queue printer troubleshooting"
+        >
+
+          <div class="article-card-top">
+
+            <span class="article-category hardware">
+              Hardware
+            </span>
+
+            <i class="fa-solid fa-print article-icon"></i>
+
+          </div>
+
+          <h3>
+            Printer Troubleshooting
+          </h3>
+
+          <p>
+            Troubleshoot common printer problems such as offline status and print failures.
+          </p>
+
+          <div class="article-footer">
+
+            <span>
+              <i class="fa-regular fa-clock"></i>
+              4 min read
+            </span>
+
+            <span class="read-article">
+              Read article
+              <i class="fa-solid fa-arrow-right"></i>
+            </span>
+
+          </div>
+
+        </article>
+
+
+        <!-- ARTICLE 3 -->
+
+        <article
+          class="article-card"
+          data-category="Software"
+          data-title="Application not responding"
+          data-keywords="software application app program frozen not responding windows"
+          data-content="application software program frozen task manager restart application"
+        >
+
+          <div class="article-card-top">
+
+            <span class="article-category software">
+              Software
+            </span>
+
+            <i class="fa-solid fa-window-maximize article-icon"></i>
+
+          </div>
+
+          <h3>
+            Application Not Responding
+          </h3>
+
+          <p>
+            What to do when an application freezes or stops responding.
+          </p>
+
+          <div class="article-footer">
+
+            <span>
+              <i class="fa-regular fa-clock"></i>
+              3 min read
+            </span>
+
+            <span class="read-article">
+              Read article
+              <i class="fa-solid fa-arrow-right"></i>
+            </span>
+
+          </div>
+
+        </article>
+
+
+        <!-- ARTICLE 4 -->
+
+        <article
+          class="article-card"
+          data-category="Software"
+          data-title="Windows update troubleshooting"
+          data-keywords="windows update update error operating system restart"
+          data-content="windows update troubleshooting update failed restart computer"
+        >
+
+          <div class="article-card-top">
+
+            <span class="article-category software">
+              Software
+            </span>
+
+            <i class="fa-brands fa-windows article-icon"></i>
+
+          </div>
+
+          <h3>
+            Windows Update Troubleshooting
+          </h3>
+
+          <p>
+            Basic steps for resolving common Windows update problems.
+          </p>
+
+          <div class="article-footer">
+
+            <span>
+              <i class="fa-regular fa-clock"></i>
+              4 min read
+            </span>
+
+            <span class="read-article">
+              Read article
+              <i class="fa-solid fa-arrow-right"></i>
+            </span>
+
+          </div>
+
+        </article>
+
+
+        <!-- ARTICLE 5 -->
+
+        <article
+          class="article-card"
+          data-category="Network"
+          data-title="No internet connection"
+          data-keywords="internet wifi network connection ethernet lan offline router"
+          data-content="internet connection wifi network ethernet router restart network adapter"
+        >
+
+          <div class="article-card-top">
+
+            <span class="article-category network">
+              Network
+            </span>
+
+            <i class="fa-solid fa-wifi article-icon"></i>
+
+          </div>
+
+          <h3>
+            No Internet Connection
+          </h3>
+
+          <p>
+            Troubleshoot Wi-Fi, Ethernet, and general internet connectivity problems.
+          </p>
+
+          <div class="article-footer">
+
+            <span>
+              <i class="fa-regular fa-clock"></i>
+              5 min read
+            </span>
+
+            <span class="read-article">
+              Read article
+              <i class="fa-solid fa-arrow-right"></i>
+            </span>
+
+          </div>
+
+        </article>
+
+
+        <!-- ARTICLE 6 -->
+
+        <article
+          class="article-card"
+          data-category="Network"
+          data-title="Wi-Fi connection troubleshooting"
+          data-keywords="wifi wireless wireless network internet signal connection"
+          data-content="wifi wireless connection signal router reconnect network"
+        >
+
+          <div class="article-card-top">
+
+            <span class="article-category network">
+              Network
+            </span>
+
+            <i class="fa-solid fa-signal article-icon"></i>
+
+          </div>
+
+          <h3>
+            Wi-Fi Connection Troubleshooting
+          </h3>
+
+          <p>
+            Check common causes of unstable or disconnected Wi-Fi connections.
+          </p>
+
+          <div class="article-footer">
+
+            <span>
+              <i class="fa-regular fa-clock"></i>
+              4 min read
+            </span>
+
+            <span class="read-article">
+              Read article
+              <i class="fa-solid fa-arrow-right"></i>
+            </span>
+
+          </div>
+
+        </article>
+
+
+        <!-- ARTICLE 7 -->
+
+        <article
+          class="article-card"
+          data-category="Email"
+          data-title="Email not sending"
+          data-keywords="email outlook gmail send receive mailbox message attachment"
+          data-content="email not sending outlook mailbox attachment internet connection"
+        >
+
+          <div class="article-card-top">
+
+            <span class="article-category email">
+              Email
+            </span>
+
+            <i class="fa-solid fa-envelope article-icon"></i>
+
+          </div>
+
+          <h3>
+            Email Not Sending
+          </h3>
+
+          <p>
+            Troubleshoot email messages that remain in the outbox or fail to send.
+          </p>
+
+          <div class="article-footer">
+
+            <span>
+              <i class="fa-regular fa-clock"></i>
+              4 min read
+            </span>
+
+            <span class="read-article">
+              Read article
+              <i class="fa-solid fa-arrow-right"></i>
+            </span>
+
+          </div>
+
+        </article>
+
+
+        <!-- ARTICLE 8 -->
+
+        <article
+          class="article-card"
+          data-category="Security"
+          data-title="How to identify phishing emails"
+          data-keywords="phishing security suspicious email scam malicious link cyber"
+          data-content="phishing email suspicious message security malicious links attachments"
+        >
+
+          <div class="article-card-top">
+
+            <span class="article-category security">
+              Security
+            </span>
+
+            <i class="fa-solid fa-shield-halved article-icon"></i>
+
+          </div>
+
+          <h3>
+            How to Identify Phishing Emails
+          </h3>
+
+          <p>
+            Learn how to recognize suspicious emails, links, and attachments.
+          </p>
+
+          <div class="article-footer">
+
+            <span>
+              <i class="fa-regular fa-clock"></i>
+              5 min read
+            </span>
+
+            <span class="read-article">
+              Read article
+              <i class="fa-solid fa-arrow-right"></i>
+            </span>
+
+          </div>
+
+        </article>
+
+
+        <!-- ARTICLE 9 -->
+
+        <article
+          class="article-card"
+          data-category="Access"
+          data-title="Password reset"
+          data-keywords="password reset account login credentials forgot password access"
+          data-content="password reset account login credentials forgot password access"
+        >
+
+          <div class="article-card-top">
+
+            <span class="article-category access">
+              Access
+            </span>
+
+            <i class="fa-solid fa-key article-icon"></i>
+
+          </div>
+
+          <h3>
+            Password Reset
+          </h3>
+
+          <p>
+            Steps to follow when you forget your password or cannot access your account.
+          </p>
+
+          <div class="article-footer">
+
+            <span>
+              <i class="fa-regular fa-clock"></i>
+              3 min read
+            </span>
+
+            <span class="read-article">
+              Read article
+              <i class="fa-solid fa-arrow-right"></i>
+            </span>
+
+          </div>
+
+        </article>
+
+
+        <!-- ARTICLE 10 -->
+
+        <article
+          class="article-card"
+          data-category="Access"
+          data-title="Account locked"
+          data-keywords="account locked login access username password lockout"
+          data-content="account locked login lockout password username access service desk"
+        >
+
+          <div class="article-card-top">
+
+            <span class="article-category access">
+              Access
+            </span>
+
+            <i class="fa-solid fa-user-lock article-icon"></i>
+
+          </div>
+
+          <h3>
+            Account Locked
+          </h3>
+
+          <p>
+            What to do when your account is locked after multiple unsuccessful login attempts.
+          </p>
+
+          <div class="article-footer">
+
+            <span>
+              <i class="fa-regular fa-clock"></i>
+              3 min read
+            </span>
+
+            <span class="read-article">
+              Read article
+              <i class="fa-solid fa-arrow-right"></i>
+            </span>
+
+          </div>
+
+        </article>
+
+      </div>
+
+
+      <!-- EMPTY SEARCH RESULT -->
+
+      <div
+        id="noArticles"
+        class="kb-empty"
+        style="display:none;"
+      >
+
+        <div class="empty-icon">
+          <i class="fa-solid fa-magnifying-glass"></i>
+        </div>
+
+        <h3>
+          No articles found
+        </h3>
+
+        <p>
+          Try another search term or select a different category.
+        </p>
+
+        <button
+          type="button"
+          id="resetKnowledgeBase"
+          class="btn btn-primary"
+        >
+          <i class="fa-solid fa-rotate-left"></i>
+          Show All Articles
+        </button>
+
+      </div>
+
+    </section>
+
+  </div>
+
+</main>
+
+
+<!-- =========================
+     ARTICLE MODAL
+========================= -->
+
+<div
+  class="article-modal"
+  id="articleModal"
+  aria-hidden="true"
+>
+
+  <div class="article-modal-overlay" id="articleModalOverlay"></div>
+
+  <div class="article-modal-box">
+
+    <button
+      type="button"
+      class="article-modal-close"
+      id="closeArticleModal"
+      aria-label="Close article"
+    >
+      <i class="fa-solid fa-xmark"></i>
+    </button>
+
+    <div class="modal-category" id="modalCategory">
+      Category
+    </div>
+
+    <h2 id="modalTitle">
+      Article Title
+    </h2>
+
+    <div class="modal-divider"></div>
+
+    <div
+      class="article-full-content"
+      id="modalContent"
+    >
+    </div>
+
+  </div>
+
+</div>
+
+
+<script src="/js/main.js"></script>
+<script src="/js/knowledge-base.js"></script>
+
+</body>
+</html>

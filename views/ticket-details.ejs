@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>NexaDesk | <%= ticket.ticket_number %></title>
+
+  <link rel="stylesheet" href="/css/base.css">
+  <link rel="stylesheet" href="/css/sidebar.css">
+  <link rel="stylesheet" href="/css/topbar.css">
+  <link rel="stylesheet" href="/css/ticket-details.css">
+  <link rel="stylesheet" href="/css/responsive.css">
+
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+  >
+</head>
+
+<body>
+
+<aside class="sidebar" id="sidebar">
+
+  <div class="sidebar-logo">
+    <h2>Nexa<span>Desk</span></h2>
+  </div>
+
+  <nav class="sidebar-nav">
+
+    <div class="nav-label">Workspace</div>
+
+    <a href="/dashboard" class="nav-item">
+      <i class="fa-solid fa-chart-line"></i>
+      Dashboard
+    </a>
+
+    <a href="/tickets" class="nav-item active">
+      <i class="fa-solid fa-ticket"></i>
+      My Tickets
+    </a>
+
+    <a href="/tickets/new" class="nav-item">
+      <i class="fa-solid fa-plus"></i>
+      New Ticket
+    </a>
+
+    <a href="/knowledge-base" class="nav-item">
+      <i class="fa-solid fa-book"></i>
+      Knowledge Base
+    </a>
+
+    <div class="nav-label" style="margin-top:25px;">
+      Account
+    </div>
+
+    <a href="/profile" class="nav-item">
+      <i class="fa-solid fa-user"></i>
+      Profile
+    </a>
+
+    <a href="/notifications" class="nav-item">
+      <i class="fa-solid fa-bell"></i>
+      Notifications
+    </a>
+
+    <% if (user && user.role === "admin") { %>
+      <a href="/admin" class="nav-item">
+        <i class="fa-solid fa-shield-halved"></i>
+        Admin Dashboard
+      </a>
+    <% } %>
+
+    <form action="/logout" method="POST" style="margin-top:15px;">
+      <button
+        type="submit"
+        class="nav-item"
+        style="width:100%; border:none; background:transparent; text-align:left;"
+      >
+        <i class="fa-solid fa-right-from-bracket"></i>
+        Logout
+      </button>
+    </form>
+
+  </nav>
+
+</aside>
+
+
+<header class="topbar">
+
+  <button class="mobile-menu" id="mobileMenu" type="button">
+    <i class="fa-solid fa-bars"></i>
+  </button>
+
+  <div class="topbar-search">
+
+    <i class="fa-solid fa-magnifying-glass"></i>
+
+    <input
+      type="text"
+      id="globalSearch"
+      placeholder="Search tickets..."
+    >
+
+  </div>
+
+  <div class="topbar-right">
+
+    <a href="/notifications" class="topbar-icon">
+      <i class="fa-regular fa-bell"></i>
+    </a>
+
+    <div class="topbar-user">
+
+      <div class="topbar-avatar">
+        <%= user.fullName
+          .split(" ")
+          .map(name => name[0])
+          .slice(0,2)
+          .join("")
+          .toUpperCase() %>
+      </div>
+
+      <div class="topbar-user-info">
+        <strong><%= user.fullName %></strong>
+        <span><%= user.department %></span>
+      </div>
+
+    </div>
+
+  </div>
+
+</header>
+
+
+<main class="main-content">
+
+  <div class="page-container">
+
+
+    <!-- HEADER -->
+    <section class="ticket-detail-header">
+
+      <div class="ticket-detail-top">
+
+        <div>
+
+          <div class="ticket-detail-number">
+            <%= ticket.ticket_number %>
+          </div>
+
+          <h1>
+            <%= ticket.subject %>
+          </h1>
+
+          <div class="ticket-meta">
+
+            <span
+              class="badge
+              <%= ticket.status === 'Open'
+                ? 'status-open'
+                : ticket.status === 'In Progress'
+                ? 'status-progress'
+                : ticket.status === 'Resolved'
+                ? 'status-resolved'
+                : 'status-closed' %>"
+            >
+              <%= ticket.status %>
+            </span>
+
+            <span
+              class="badge
+              <%= ticket.priority === 'Low'
+                ? 'priority-low'
+                : ticket.priority === 'Medium'
+                ? 'priority-medium'
+                : ticket.priority === 'High'
+                ? 'priority-high'
+                : 'priority-urgent' %>"
+            >
+              <%= ticket.priority %>
+            </span>
+
+            <span class="badge">
+              <%= ticket.category %>
+            </span>
+
+          </div>
+
+        </div>
+
+        <a
+          href="/tickets"
+          class="btn btn-secondary"
+        >
+          <i class="fa-solid fa-arrow-left"></i>
+          Back to Tickets
+        </a>
+
+      </div>
+
+    </section>
+
+
+    <div class="ticket-detail-grid">
+
+
+      <!-- LEFT -->
+      <div>
+
+
+        <!-- DESCRIPTION -->
+        <section class="detail-card">
+
+          <h2>
+            <i class="fa-solid fa-align-left"></i>
+            Issue Description
+          </h2>
+
+          <div class="description">
+            <%= ticket.description %>
+          </div>
+
+        </section>
+
+
+        <!-- ACTIVITY -->
+        <section class="detail-card">
+
+          <h2>
+            <i class="fa-solid fa-clock-rotate-left"></i>
+            Activity
+          </h2>
+
+          <% if (updates && updates.length > 0) { %>
+
+            <div class="timeline">
+
+              <% updates.forEach(update => { %>
+
+                <div class="timeline-item">
+
+                  <strong>
+                    <%= update.action %>
+                  </strong>
+
+                  <small>
+                    <%= update.full_name || "System" %>
+                    ·
+                    <%= new Date(update.created_at).toLocaleString() %>
+                  </small>
+
+                  <% if (update.note) { %>
+
+                    <p>
+                      <%= update.note %>
+                    </p>
+
+                  <% } %>
+
+                </div>
+
+              <% }) %>
+
+            </div>
+
+          <% } else { %>
+
+            <div class="empty-state">
+              <i class="fa-solid fa-clock"></i>
+
+              <h3>
+                No activity yet
+              </h3>
+            </div>
+
+          <% } %>
+
+        </section>
+
+
+        <!-- REPLY -->
+        <% if (ticket.status !== "Closed") { %>
+
+          <section class="detail-card reply-card">
+
+            <h2>
+              <i class="fa-solid fa-reply"></i>
+              Add Reply
+            </h2>
+
+            <form
+              action="/tickets/<%= ticket.id %>/reply"
+              method="POST"
+              id="replyForm"
+            >
+
+              <div class="form-group">
+
+                <textarea
+                  id="replyMessage"
+                  name="message"
+                  class="form-control"
+                  placeholder="Add additional information or reply to this ticket..."
+                  required
+                ></textarea>
+
+                <small
+                  id="replyCounter"
+                  style="color:#94a3b8;"
+                >
+                  0 characters
+                </small>
+
+              </div>
+
+              <button
+                type="submit"
+                class="btn btn-primary"
+              >
+                <i class="fa-solid fa-paper-plane"></i>
+                Send Reply
+              </button>
+
+            </form>
+
+          </section>
+
+        <% } %>
+
+      </div>
+
+
+      <!-- RIGHT -->
+      <aside>
+
+
+        <section class="detail-card">
+
+          <h2>
+            <i class="fa-solid fa-user"></i>
+            Requester
+          </h2>
+
+          <div class="requester-info">
+
+            <div class="requester-item">
+
+              <span>Name</span>
+
+              <strong>
+                <%= ticket.full_name %>
+              </strong>
+
+            </div>
+
+            <div class="requester-item">
+
+              <span>Email</span>
+
+              <strong>
+                <%= ticket.email %>
+              </strong>
+
+            </div>
+
+            <div class="requester-item">
+
+              <span>Department</span>
+
+              <strong>
+                <%= ticket.department %>
+              </strong>
+
+            </div>
+
+            <div class="requester-item">
+
+              <span>Created</span>
+
+              <strong>
+                <%= new Date(ticket.created_at).toLocaleString() %>
+              </strong>
+
+            </div>
+
+            <div class="requester-item">
+
+              <span>Last Updated</span>
+
+              <strong>
+                <%= new Date(ticket.updated_at).toLocaleString() %>
+              </strong>
+
+            </div>
+
+          </div>
+
+        </section>
+
+      </aside>
+
+    </div>
+
+  </div>
+
+</main>
+
+
+<script src="/js/main.js"></script>
+<script src="/js/ticket-details.js"></script>
+
+</body>
+</html>

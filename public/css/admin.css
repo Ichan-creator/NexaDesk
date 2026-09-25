@@ -1,0 +1,447 @@
+/* =========================================
+   ADMIN DASHBOARD
+========================================= */
+
+.admin-page {
+    min-height: 100vh;
+    background: var(--bg-color, #f5f7fb);
+}
+
+/* =========================================
+   ADMIN BANNER
+========================================= */
+
+.admin-banner {
+    background: linear-gradient(135deg, #111827, #1f2937);
+    color: #ffffff;
+    border-radius: 16px;
+    padding: 28px;
+    margin-bottom: 24px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
+.admin-banner h2 {
+    margin: 0 0 8px;
+    font-size: 24px;
+}
+
+.admin-banner p {
+    margin: 0;
+    color: #d1d5db;
+}
+
+/* =========================================
+   STAT CARDS
+========================================= */
+
+.admin-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+    margin-bottom: 28px;
+}
+
+.admin-stat-card {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+    padding: 22px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
+}
+
+.admin-stat-card h3 {
+    margin: 0 0 8px;
+    font-size: 14px;
+    color: #6b7280;
+    font-weight: 600;
+}
+
+.admin-stat-card .stat-number {
+    font-size: 30px;
+    font-weight: 700;
+    color: #111827;
+}
+
+/* =========================================
+   ADMIN SECTION
+========================================= */
+
+.admin-section {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 24px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
+}
+
+.admin-section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.admin-section-header h2 {
+    margin: 0;
+    font-size: 20px;
+    color: #111827;
+}
+
+.admin-section-header p {
+    margin: 5px 0 0;
+    color: #6b7280;
+    font-size: 14px;
+}
+
+/* =========================================
+   SEARCH
+========================================= */
+
+.admin-search {
+    position: relative;
+    width: 280px;
+}
+
+.admin-search input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 11px 14px 11px 40px;
+    border: 1px solid #d1d5db;
+    border-radius: 10px;
+    outline: none;
+    font-size: 14px;
+    transition: 0.2s ease;
+}
+
+.admin-search input:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.admin-search i {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #9ca3af;
+}
+
+/* =========================================
+   TABLE
+========================================= */
+
+.admin-table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 800px;
+}
+
+.admin-table th {
+    text-align: left;
+    padding: 14px 16px;
+    background: #f9fafb;
+    color: #6b7280;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.admin-table td {
+    padding: 15px 16px;
+    border-bottom: 1px solid #f1f5f9;
+    color: #374151;
+    font-size: 14px;
+    vertical-align: middle;
+}
+
+.admin-table tr:hover td {
+    background: #f9fafb;
+}
+
+/* =========================================
+   USER AVATAR
+========================================= */
+
+.admin-user {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.admin-user-avatar {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #e5e7eb;
+    color: #374151;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+.admin-user-name {
+    font-weight: 600;
+    color: #111827;
+}
+
+.admin-user-email {
+    font-size: 12px;
+    color: #6b7280;
+    margin-top: 2px;
+}
+
+/* =========================================
+   USER ACCOUNT STATUS
+========================================= */
+
+.admin-status {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+    min-width: 65px;
+}
+
+.admin-status.active {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.admin-status.inactive {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+/* =========================================
+   USER STATUS ACTION BUTTON
+========================================= */
+
+.user-status-button {
+    border: none;
+    padding: 8px 12px;
+    border-radius: 7px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.user-status-button.activate {
+    background: #16a34a;
+    color: #ffffff;
+}
+
+.user-status-button.deactivate {
+    background: #dc2626;
+    color: #ffffff;
+}
+
+.user-status-button:hover {
+    opacity: 0.88;
+    transform: translateY(-1px);
+}
+
+.user-status-button:active {
+    transform: translateY(0);
+}
+
+.user-status-button i {
+    font-size: 12px;
+}
+
+/* =========================================
+   TICKET TABLE
+========================================= */
+
+.ticket-number {
+    font-weight: 700;
+    color: #2563eb;
+}
+
+.ticket-subject {
+    font-weight: 600;
+    color: #111827;
+}
+
+.ticket-preview {
+    max-width: 300px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: #6b7280;
+}
+
+/* =========================================
+   PRIORITY
+========================================= */
+
+.ticket-priority {
+    display: inline-flex;
+    padding: 5px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.ticket-priority.low {
+    background: #e0f2fe;
+    color: #0369a1;
+}
+
+.ticket-priority.medium {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.ticket-priority.high {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+.ticket-priority.critical {
+    background: #7f1d1d;
+    color: #ffffff;
+}
+
+/* =========================================
+   TICKET STATUS
+========================================= */
+
+.ticket-status {
+    display: inline-flex;
+    padding: 5px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.ticket-status.open {
+    background: #dbeafe;
+    color: #1d4ed8;
+}
+
+.ticket-status.in-progress {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.ticket-status.resolved {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.ticket-status.closed {
+    background: #e5e7eb;
+    color: #374151;
+}
+
+/* =========================================
+   VIEW TICKET BUTTON
+========================================= */
+
+.ticket-view-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 8px 13px;
+    border-radius: 8px;
+    background: #2563eb;
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+    transition: 0.2s ease;
+}
+
+.ticket-view-button:hover {
+    background: #1d4ed8;
+    transform: translateY(-1px);
+}
+
+/* =========================================
+   EMPTY STATE
+========================================= */
+
+.admin-empty {
+    text-align: center;
+    padding: 40px 20px;
+    color: #6b7280;
+}
+
+.admin-empty i {
+    font-size: 36px;
+    margin-bottom: 12px;
+    color: #9ca3af;
+}
+
+.admin-empty p {
+    margin: 0;
+}
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width: 1100px) {
+
+    .admin-stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .admin-section-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .admin-search {
+        width: 100%;
+    }
+}
+
+@media (max-width: 600px) {
+
+    .admin-stats {
+        grid-template-columns: 1fr;
+    }
+
+    .admin-section {
+        padding: 16px;
+        border-radius: 12px;
+    }
+
+    .admin-banner {
+        padding: 20px;
+    }
+
+    .admin-banner h2 {
+        font-size: 20px;
+    }
+
+    .user-status-button {
+        padding: 7px 10px;
+        font-size: 11px;
+    }
+
+    .admin-status {
+        padding: 5px 10px;
+        font-size: 11px;
+    }
+}

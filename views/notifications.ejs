@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>NexaDesk | Notifications</title>
+
+  <link rel="stylesheet" href="/css/base.css">
+  <link rel="stylesheet" href="/css/sidebar.css">
+  <link rel="stylesheet" href="/css/topbar.css">
+  <link rel="stylesheet" href="/css/notifications.css">
+  <link rel="stylesheet" href="/css/responsive.css">
+
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+  >
+</head>
+
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+
+  <div class="sidebar-logo">
+    <h2>Nexa<span>Desk</span></h2>
+  </div>
+
+  <nav class="sidebar-nav">
+
+    <div class="nav-label">
+      Workspace
+    </div>
+
+    <a
+      href="/dashboard"
+      class="nav-item <%= currentPath === '/dashboard' ? 'active' : '' %>"
+    >
+      <i class="fa-solid fa-chart-line"></i>
+      Dashboard
+    </a>
+
+    <a
+      href="/tickets"
+      class="nav-item <%= currentPath.startsWith('/tickets') && currentPath !== '/tickets/new' ? 'active' : '' %>"
+    >
+      <i class="fa-solid fa-ticket"></i>
+      My Tickets
+    </a>
+
+    <a
+      href="/tickets/new"
+      class="nav-item <%= currentPath === '/tickets/new' ? 'active' : '' %>"
+    >
+      <i class="fa-solid fa-plus"></i>
+      New Ticket
+    </a>
+
+    <a
+      href="/knowledge-base"
+      class="nav-item <%= currentPath.startsWith('/knowledge-base') ? 'active' : '' %>"
+    >
+      <i class="fa-solid fa-book"></i>
+      Knowledge Base
+    </a>
+
+    <div
+      class="nav-label"
+      style="margin-top:25px;"
+    >
+      Account
+    </div>
+
+    <a
+      href="/profile"
+      class="nav-item <%= currentPath.startsWith('/profile') ? 'active' : '' %>"
+    >
+      <i class="fa-solid fa-user"></i>
+      Profile
+    </a>
+
+    <a
+      href="/notifications"
+      class="nav-item <%= currentPath.startsWith('/notifications') ? 'active' : '' %>"
+    >
+      <i class="fa-solid fa-bell"></i>
+
+      <span class="notification-nav-label">
+        Notifications
+      </span>
+
+      <% if (typeof unreadCount !== "undefined" && unreadCount > 0) { %>
+        <span class="sidebar-notification-count">
+          <%= unreadCount > 99 ? "99+" : unreadCount %>
+        </span>
+      <% } %>
+
+    </a>
+
+    <form action="/logout" method="POST" style="margin-top:15px;">
+      <button
+        type="submit"
+        class="nav-item"
+        style="width:100%; border:none; background:transparent; text-align:left;"
+      >
+        <i class="fa-solid fa-right-from-bracket"></i>
+        Logout
+      </button>
+    </form>
+
+  </nav>
+
+  <div class="sidebar-user">
+
+    <div class="sidebar-user-info">
+
+      <div class="sidebar-avatar">
+        <%= user.fullName
+          .split(" ")
+          .map(name => name[0])
+          .slice(0,2)
+          .join("")
+          .toUpperCase()
+        %>
+      </div>
+
+      <div class="sidebar-user-text">
+        <strong>
+          <%= user.fullName %>
+        </strong>
+
+        <small>
+          <%= user.role %>
+        </small>
+      </div>
+
+    </div>
+
+  </div>
+
+</aside>
+
+
+<!-- TOPBAR -->
+<header class="topbar">
+
+  <button
+    class="mobile-menu"
+    id="mobileMenu"
+    type="button"
+  >
+    <i class="fa-solid fa-bars"></i>
+  </button>
+
+  <div class="topbar-search">
+
+    <i class="fa-solid fa-magnifying-glass"></i>
+
+    <input
+      type="text"
+      id="globalSearch"
+      placeholder="Search tickets..."
+    >
+
+  </div>
+
+  <div class="topbar-right">
+
+    <a
+      href="/notifications"
+      class="topbar-icon active"
+      aria-label="Notifications"
+    >
+      <i class="fa-regular fa-bell"></i>
+
+      <% if (typeof unreadCount !== "undefined" && unreadCount > 0) { %>
+        <span class="notification-dot"></span>
+      <% } %>
+
+    </a>
+
+    <div class="topbar-user">
+
+      <div class="topbar-avatar">
+        <%= user.fullName
+          .split(" ")
+          .map(name => name[0])
+          .slice(0,2)
+          .join("")
+          .toUpperCase()
+        %>
+      </div>
+
+      <div class="topbar-user-info">
+
+        <strong>
+          <%= user.fullName %>
+        </strong>
+
+        <span>
+          <%= user.department %>
+        </span>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</header>
+
+
+<!-- MAIN CONTENT -->
+<main class="main-content">
+
+  <div class="page-container notifications-page">
+
+    <!-- PAGE HEADER -->
+    <div class="notifications-header">
+
+      <div class="notifications-title">
+
+        <div class="notifications-title-icon">
+          <i class="fa-solid fa-bell"></i>
+        </div>
+
+        <div>
+          <h1>Notifications</h1>
+
+          <p>
+            Stay updated with your IT support activity.
+          </p>
+        </div>
+
+      </div>
+
+      <div class="notification-summary">
+
+        <span class="summary-total">
+          <i class="fa-solid fa-inbox"></i>
+
+          <%= notifications ? notifications.length : 0 %>
+          total
+        </span>
+
+        <% if (typeof unreadCount !== "undefined" && unreadCount > 0) { %>
+
+          <span class="summary-unread">
+            <i class="fa-solid fa-circle"></i>
+
+            <%= unreadCount %>
+            unread
+          </span>
+
+        <% } else { %>
+
+          <span class="summary-read">
+            <i class="fa-solid fa-check"></i>
+            All caught up
+          </span>
+
+        <% } %>
+
+      </div>
+
+    </div>
+
+
+    <!-- SEARCH -->
+    <% if (notifications && notifications.length > 0) { %>
+
+      <div class="notification-toolbar">
+
+        <div class="notification-search">
+
+          <i class="fa-solid fa-magnifying-glass"></i>
+
+          <input
+            type="text"
+            id="notificationSearch"
+            placeholder="Search notifications..."
+          >
+
+        </div>
+
+        <button
+          type="button"
+          id="clearNotificationSearch"
+          class="clear-search-button"
+        >
+          Clear
+        </button>
+
+      </div>
+
+    <% } %>
+
+
+    <!-- NOTIFICATIONS -->
+    <section class="notifications-card">
+
+      <% if (notifications && notifications.length > 0) { %>
+
+        <div
+          class="notification-list"
+          id="notificationList"
+        >
+
+          <% notifications.forEach(notification => { %>
+
+            <%
+              const isUnread =
+                Number(notification.is_read) === 0;
+
+              const notificationType =
+                String(notification.type || "info").toLowerCase();
+
+              let iconClass = "fa-circle-info";
+
+              if (
+                notificationType === "ticket" ||
+                notificationType === "support"
+              ) {
+                iconClass = "fa-ticket";
+              }
+
+              if (
+                notificationType === "success"
+              ) {
+                iconClass = "fa-circle-check";
+              }
+
+              if (
+                notificationType === "warning"
+              ) {
+                iconClass = "fa-triangle-exclamation";
+              }
+
+              if (
+                notificationType === "error"
+              ) {
+                iconClass = "fa-circle-exclamation";
+              }
+
+              if (
+                notificationType === "system"
+              ) {
+                iconClass = "fa-gear";
+              }
+            %>
+
+            <article
+              class="notification-item <%= isUnread ? 'unread' : 'read' %>"
+              data-search="<%= (
+                (notification.title || '') +
+                ' ' +
+                (notification.message || '') +
+                ' ' +
+                (notification.type || '')
+              ).toLowerCase() %>"
+            >
+
+              <!-- ICON -->
+              <div class="notification-icon type-<%= notificationType %>">
+
+                <i class="fa-solid <%= iconClass %>"></i>
+
+              </div>
+
+
+              <!-- CONTENT -->
+              <div class="notification-content">
+
+                <div class="notification-main">
+
+                  <div class="notification-heading">
+
+                    <h3>
+                      <%= notification.title %>
+                    </h3>
+
+                    <% if (isUnread) { %>
+
+                      <span class="unread-badge">
+                        New
+                      </span>
+
+                    <% } %>
+
+                  </div>
+
+                  <p>
+                    <%= notification.message %>
+                  </p>
+
+                  <div class="notification-meta">
+
+                    <span>
+                      <i class="fa-regular fa-clock"></i>
+
+                      <%= new Date(
+                        notification.created_at
+                      ).toLocaleString("en-PH", {
+                        dateStyle: "medium",
+                        timeStyle: "short"
+                      }) %>
+
+                    </span>
+
+                    <% if (notification.type) { %>
+
+                      <span class="notification-type">
+                        <%= notification.type %>
+                      </span>
+
+                    <% } %>
+
+                  </div>
+
+                </div>
+
+
+                <!-- ACTION -->
+                <div class="notification-action">
+
+                  <% if (isUnread) { %>
+
+                    <form
+                      action="/notifications/<%= notification.id %>/read"
+                      method="POST"
+                    >
+
+                      <button
+                        type="submit"
+                        class="mark-read-button"
+                        title="Mark as read"
+                      >
+                        <i class="fa-solid fa-check"></i>
+                        <span>Mark as read</span>
+                      </button>
+
+                    </form>
+
+                  <% } else { %>
+
+                    <span class="read-indicator">
+                      <i class="fa-solid fa-check-double"></i>
+                      Read
+                    </span>
+
+                  <% } %>
+
+                </div>
+
+              </div>
+
+            </article>
+
+          <% }) %>
+
+        </div>
+
+
+        <!-- NO SEARCH RESULTS -->
+        <div
+          id="noNotificationResults"
+          class="notification-no-results"
+          style="display:none;"
+        >
+
+          <div class="empty-icon">
+            <i class="fa-solid fa-magnifying-glass"></i>
+          </div>
+
+          <h3>
+            No notifications found
+          </h3>
+
+          <p>
+            Try searching with a different keyword.
+          </p>
+
+        </div>
+
+      <% } else { %>
+
+        <!-- EMPTY STATE -->
+        <div class="notifications-empty">
+
+          <div class="empty-icon">
+            <i class="fa-regular fa-bell"></i>
+          </div>
+
+          <h2>
+            You're all caught up
+          </h2>
+
+          <p>
+            You don't have any notifications yet.
+            Updates about your tickets will appear here.
+          </p>
+
+          <a
+            href="/tickets/new"
+            class="empty-action"
+          >
+            <i class="fa-solid fa-plus"></i>
+            Create a Ticket
+          </a>
+
+        </div>
+
+      <% } %>
+
+    </section>
+
+  </div>
+
+</main>
+
+
+<script src="/js/main.js"></script>
+<script src="/js/notifications.js"></script>
+
+</body>
+</html>
