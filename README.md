@@ -396,7 +396,7 @@ NexaDesk demonstrates practical experience with:
 
 # 👨‍💻 Author
 
-## Christian Aquino
+## Christian Russel P. Aquino
 
 **Bachelor of Science in Information Technology**
 
