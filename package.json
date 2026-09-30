@@ -1,13 +1,19 @@
 {
   "name": "nexadesk",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "IT Support and Ticketing System",
+  "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node app.js",
+    "dev": "nodemon app.js"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "it-support",
+    "helpdesk",
+    "ticketing-system",
+    "nexadesk"
+  ],
+  "author": "Christian Aquino",
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
@@ -18,5 +24,8 @@
     "express": "^5.2.1",
     "express-session": "^1.19.0",
     "mysql2": "^3.24.4"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14"
   }
 }
