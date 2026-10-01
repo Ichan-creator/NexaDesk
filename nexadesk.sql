@@ -5,6 +5,9 @@ COLLATE utf8mb4_unicode_ci;
 USE nexadesk;
 
 ALTER TABLE users
+ADD COLUMN is_active TINYINT(1) NOT NULL DEFAULT 1;
+
+ALTER TABLE users
 ADD COLUMN last_seen TIMESTAMP NULL DEFAULT NULL;
 
 ALTER TABLE users
@@ -194,7 +197,17 @@ VALUES
     'active'
 );
 
+UPDATE users
+SET password_hash = '$2b$10$DL8/dHzzKXoNbuCNb9gjM.P/fR/F4oKE.3ZO7Z/qXzt3SEcFZc0Pm',
+    role = 'admin',
+    status = 'active'
+WHERE username = 'admin';
+
 SHOW TABLES;
+
+SELECT id, username, email, role, status
+FROM users
+WHERE id = 2;
 
 SELECT
     id,
@@ -227,6 +240,17 @@ SELECT
     last_active
 FROM users
 WHERE role = 'admin';
+
+SELECT
+    id,
+    username,
+    role,
+    is_active,
+    password_hash
+FROM users
+WHERE username = 'admin';
+
+DESCRIBE users;
 
 SELECT * FROM tickets;
 
