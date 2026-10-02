@@ -17,12 +17,13 @@ exports.register = async (req, res) => {
   try {
     const {
       full_name,
+      username,
       email,
       password,
       department
     } = req.body;
 
-    if (!full_name || !email || !password || !department) {
+    if (!full_name || !username || !email || !password || !department) {
       req.session.error = "Please complete all required fields.";
       return res.redirect("/register");
     }
@@ -32,13 +33,23 @@ exports.register = async (req, res) => {
       return res.redirect("/register");
     }
 
-    const [existingUser] = await pool.query(
+    const [existingEmail] = await pool.query(
       "SELECT id FROM users WHERE email = ?",
       [email]
     );
 
-    if (existingUser.length > 0) {
+    if (existingEmail.length > 0) {
       req.session.error = "An account with that email already exists.";
+      return res.redirect("/register");
+    }
+
+    const [existingUsername] = await pool.query(
+      "SELECT id FROM users WHERE username = ?",
+      [username]
+    );
+
+    if (existingUsername.length > 0) {
+      req.session.error = "That username is already taken.";
       return res.redirect("/register");
     }
 
@@ -46,17 +57,20 @@ exports.register = async (req, res) => {
 
     await pool.query(
       `INSERT INTO users
-       (full_name, email, password_hash, department, role, status)
-       VALUES (?, ?, ?, ?, 'user', 'active')`,
+       (full_name, username, email, password_hash, department, role, status, is_active)
+       VALUES (?, ?, ?, ?, ?, 'user', 'active', 1)`,
       [
         full_name,
+        username,
         email,
         passwordHash,
         department
       ]
     );
 
-    req.session.success = "Account created successfully. You can now log in.";
+    req.session.success =
+      "Account created successfully. You can now log in.";
+
     res.redirect("/login");
 
   } catch (error) {
@@ -94,7 +108,7 @@ exports.login = async (req, res) => {
 
     const user = users[0];
 
-    if (user.status !== "active") {
+    if (!user.is_active || user.status !== "active") {
       req.session.error = "Your account is inactive.";
       return res.redirect("/login");
     }
@@ -112,9 +126,11 @@ exports.login = async (req, res) => {
     req.session.user = {
       id: user.id,
       fullName: user.full_name,
+      username: user.username,
       email: user.email,
       department: user.department,
-      role: user.role
+      role: user.role,
+      is_active: user.is_active
     };
 
     res.redirect("/dashboard");
