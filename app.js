@@ -9,6 +9,7 @@ const dashboardRoutes = require("./routes/dashboardRoutes");
 const ticketRoutes = require("./routes/ticketRoutes");
 const pageRoutes = require("./routes/pageRoutes");
 const adminRoutes = require("./routes/adminRoutes");
+const notificationRoutes = require("./routes/notificationRoutes");
 
 const app = express();
 
@@ -63,6 +64,9 @@ app.use("/tickets", ticketRoutes);
 // ADMIN ROUTES
 app.use("/admin", adminRoutes);
 
+// NOTIFICATION ROUTES
+app.use("/notifications", notificationRoutes);
+
 // PROTECTED PAGE ROUTES
 app.use("/", pageRoutes);
 
@@ -80,6 +84,37 @@ app.use((err, req, res, next) => {
         title: "Server Error",
         message: "Something went wrong. Please try again."
     });
+});
+
+app.use(async (req, res, next) => {
+    try {
+        res.locals.unreadCount = 0;
+
+        if (req.session.user) {
+            const db = require("./config/db");
+
+            const [rows] = await db.execute(
+                `
+                SELECT COUNT(*) AS unreadCount
+                FROM notifications
+                WHERE user_id = ?
+                AND is_read = 0
+                `,
+                [req.session.user.id]
+            );
+
+            res.locals.unreadCount = rows[0].unreadCount;
+        }
+
+        next();
+
+    } catch (error) {
+        console.error("Notification count error:", error);
+
+        res.locals.unreadCount = 0;
+
+        next();
+    }
 });
 
 app.listen(PORT, () => {

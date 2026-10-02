@@ -157,10 +157,6 @@ exports.create = async (req, res) => {
   }
 };
 
-
-// ================================
-// Ticket Details
-// ================================
 exports.details = async (req, res) => {
   try {
     const userId = req.session.user.id;

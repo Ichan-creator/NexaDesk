@@ -308,9 +308,7 @@ exports.replyToTicket = async (req, res) => {
             req.session.error =
                 "Please enter a reply before submitting.";
 
-            return res.redirect(
-                `/admin/tickets/${ticketId}`
-            );
+            return res.redirect(`/admin/tickets/${ticketId}`);
         }
 
         const [tickets] = await db.execute(
@@ -330,6 +328,7 @@ exports.replyToTicket = async (req, res) => {
 
         const ticket = tickets[0];
 
+        // Add admin reply to ticket timeline
         await db.execute(
             `
             INSERT INTO ticket_updates
@@ -344,6 +343,7 @@ exports.replyToTicket = async (req, res) => {
             ]
         );
 
+        // Mark ticket as resolved
         await db.execute(
             `
             UPDATE tickets
@@ -355,6 +355,7 @@ exports.replyToTicket = async (req, res) => {
             [ticketId]
         );
 
+        // Notify ticket owner about the reply
         await db.execute(
             `
             INSERT INTO notifications
@@ -364,17 +365,30 @@ exports.replyToTicket = async (req, res) => {
             `,
             [
                 ticket.user_id,
-                "Ticket Updated",
-                `Your ticket ${ticket.ticket_number} has received a reply from the Service Desk.`
+                "New Reply on Your Ticket",
+                `The Service Desk replied to ticket ${ticket.ticket_number}.`
+            ]
+        );
+
+        // Notify user that the ticket was resolved
+        await db.execute(
+            `
+            INSERT INTO notifications
+                (user_id, title, message, type)
+            VALUES
+                (?, ?, ?, 'ticket')
+            `,
+            [
+                ticket.user_id,
+                "Ticket Resolved",
+                `Your ticket ${ticket.ticket_number} has been resolved by the Service Desk.`
             ]
         );
 
         req.session.success =
             `Reply sent for ticket ${ticket.ticket_number}.`;
 
-        return res.redirect(
-            `/admin/tickets/${ticketId}`
-        );
+        return res.redirect(`/admin/tickets/${ticketId}`);
 
     } catch (error) {
         console.error("Admin reply error:", error);
@@ -417,6 +431,9 @@ exports.updateTicket = async (req, res) => {
 
         const ticket = tickets[0];
 
+        const oldStatus = ticket.status;
+
+        // Update ticket
         await db.execute(
             `
             UPDATE tickets
@@ -433,6 +450,7 @@ exports.updateTicket = async (req, res) => {
             ]
         );
 
+        // Add admin update to timeline
         if (note && note.trim()) {
             await db.execute(
                 `
@@ -449,6 +467,42 @@ exports.updateTicket = async (req, res) => {
             );
         }
 
+        // Create notification based on status
+        let notificationTitle = "Ticket Updated";
+        let notificationMessage =
+            `Your ticket ${ticket.ticket_number} was updated by the Service Desk.`;
+
+        if (status === "In Progress") {
+
+            notificationTitle = "Ticket In Progress";
+
+            notificationMessage =
+                `Your ticket ${ticket.ticket_number} is now being worked on by the Service Desk.`;
+
+        } else if (status === "Resolved") {
+
+            notificationTitle = "Ticket Resolved";
+
+            notificationMessage =
+                `Your ticket ${ticket.ticket_number} has been resolved by the Service Desk.`;
+
+        } else if (status === "Closed") {
+
+            notificationTitle = "Ticket Closed";
+
+            notificationMessage =
+                `Your ticket ${ticket.ticket_number} has been closed by the Service Desk.`;
+
+        } else if (status === "Open" && oldStatus !== "Open") {
+
+            notificationTitle = "Ticket Reopened";
+
+            notificationMessage =
+                `Your ticket ${ticket.ticket_number} has been reopened.`;
+
+        }
+
+        // Notify ticket owner
         await db.execute(
             `
             INSERT INTO notifications
@@ -458,8 +512,8 @@ exports.updateTicket = async (req, res) => {
             `,
             [
                 ticket.user_id,
-                "Ticket Updated",
-                `Your ticket ${ticket.ticket_number} was updated by the Service Desk.`
+                notificationTitle,
+                notificationMessage
             ]
         );
 
