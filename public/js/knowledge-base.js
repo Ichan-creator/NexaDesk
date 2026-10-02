@@ -39,13 +39,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let selectedCategory = "all";
 
-
-  /*
-  ========================================
-  ARTICLE CONTENT
-  ========================================
-  */
-
   const articleContent = {
 
     "Computer Won't Turn On": `
@@ -345,13 +338,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   };
 
-
-  /*
-  ========================================
-  CATEGORY COUNTS
-  ========================================
-  */
-
   const categoryCounts = {};
 
   articles.forEach(article => {
@@ -376,13 +362,6 @@ document.addEventListener("DOMContentLoaded", () => {
         categoryCounts[category] || 0;
 
     });
-
-
-  /*
-  ========================================
-  FILTER ARTICLES
-  ========================================
-  */
 
   function filterArticles() {
 
@@ -445,13 +424,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     });
 
-
-    /*
-    ===============================
-    SECTION TITLE
-    ===============================
-    */
-
     if (selectedCategory === "all") {
 
       articleSectionTitle.textContent =
@@ -464,13 +436,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     }
 
-
-    /*
-    ===============================
-    RESULT TEXT
-    ===============================
-    */
-
     if (searchTerm) {
 
       articleResultText.textContent =
@@ -482,13 +447,6 @@ document.addEventListener("DOMContentLoaded", () => {
         `${visibleCount} article${visibleCount !== 1 ? "s" : ""} available`;
 
     }
-
-
-    /*
-    ===============================
-    EMPTY STATE
-    ===============================
-    */
 
     if (visibleCount === 0) {
 
@@ -503,13 +461,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
   }
-
-
-  /*
-  ========================================
-  CATEGORY BUTTONS
-  ========================================
-  */
 
   categoryButtons.forEach(button => {
 
@@ -544,13 +495,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   });
 
-
-  /*
-  ========================================
-  SEARCH
-  ========================================
-  */
-
   if (searchInput) {
 
     searchInput.addEventListener(
@@ -563,13 +507,6 @@ document.addEventListener("DOMContentLoaded", () => {
     );
 
   }
-
-
-  /*
-  ========================================
-  CLEAR SEARCH
-  ========================================
-  */
 
   if (clearSearch) {
 
@@ -588,13 +525,6 @@ document.addEventListener("DOMContentLoaded", () => {
     );
 
   }
-
-
-  /*
-  ========================================
-  RESET
-  ========================================
-  */
 
   if (resetButton) {
 
@@ -632,13 +562,6 @@ document.addEventListener("DOMContentLoaded", () => {
     );
 
   }
-
-
-  /*
-  ========================================
-  ARTICLE MODAL
-  ========================================
-  */
 
   const modal =
     document.getElementById(
@@ -732,13 +655,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   }
 
-
-  /*
-  ========================================
-  CLICK ARTICLE
-  ========================================
-  */
-
   articles.forEach(article => {
 
     article.addEventListener(
@@ -752,12 +668,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   });
 
-
-  /*
-  ========================================
-  CLOSE MODAL
-  ========================================
-  */
 
   if (closeModalButton) {
 
@@ -778,13 +688,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   }
 
-
-  /*
-  ========================================
-  ESC KEY
-  ========================================
-  */
-
   document.addEventListener(
     "keydown",
     event => {
@@ -800,13 +703,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     }
   );
-
-
-  /*
-  ========================================
-  INITIAL LOAD
-  ========================================
-  */
 
   filterArticles();
 

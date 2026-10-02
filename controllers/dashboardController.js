@@ -2,9 +2,6 @@ const db = require("../config/db");
 
 exports.index = async (req, res) => {
     try {
-        // ===============================
-        // GET TICKET STATISTICS
-        // ===============================
 
         const [statsRows] = await db.execute(`
             SELECT
@@ -17,10 +14,6 @@ exports.index = async (req, res) => {
         `);
 
         const stats = statsRows[0];
-
-        // ===============================
-        // GET USER TICKETS
-        // ===============================
 
         const [tickets] = await db.execute(
             `
@@ -37,10 +30,6 @@ exports.index = async (req, res) => {
             `,
             [req.session.user.id]
         );
-
-        // ===============================
-        // GET RECENT TICKETS
-        // ===============================
 
         const [recentTickets] = await db.execute(
             `
@@ -59,10 +48,6 @@ exports.index = async (req, res) => {
             [req.session.user.id]
         );
 
-        // ===============================
-        // GET NOTIFICATIONS
-        // ===============================
-
         const [notifications] = await db.execute(
             `
             SELECT *
@@ -73,10 +58,6 @@ exports.index = async (req, res) => {
             `,
             [req.session.user.id]
         );
-
-        // ===============================
-        // RENDER DASHBOARD
-        // ===============================
 
         res.render("dashboard", {
             title: "Dashboard",

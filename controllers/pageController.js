@@ -1,12 +1,6 @@
 const bcrypt = require("bcryptjs");
 const db = require("../config/db");
 
-/*
-=========================================
-KNOWLEDGE BASE
-=========================================
-*/
-
 exports.knowledgeBase = async (req, res) => {
   try {
     const [articles] = await db.execute(
@@ -31,13 +25,6 @@ exports.knowledgeBase = async (req, res) => {
     });
   }
 };
-
-
-/*
-=========================================
-PROFILE
-=========================================
-*/
 
 exports.profile = async (req, res) => {
   try {
@@ -77,13 +64,6 @@ exports.profile = async (req, res) => {
     });
   }
 };
-
-
-/*
-=========================================
-UPDATE PROFILE
-=========================================
-*/
 
 exports.updateProfile = async (req, res) => {
   try {
@@ -136,13 +116,6 @@ exports.updateProfile = async (req, res) => {
     res.redirect("/profile");
   }
 };
-
-
-/*
-=========================================
-CHANGE PASSWORD
-=========================================
-*/
 
 exports.changePassword = async (req, res) => {
   try {

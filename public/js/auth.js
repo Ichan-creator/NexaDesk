@@ -1,9 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-
-  // ========================================
-  // PASSWORD TOGGLE
-  // ========================================
-
+  
   const passwordToggle =
     document.querySelector(".password-toggle");
 
@@ -42,11 +38,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
   }
-
-
-  // ========================================
-  // REGISTER PASSWORD CONFIRMATION
-  // ========================================
 
   const registerForm =
     document.querySelector("#registerForm");

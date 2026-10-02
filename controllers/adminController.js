@@ -1,10 +1,6 @@
 const db = require("../config/db");
 const bcrypt = require("bcryptjs");
 
-// ======================================================
-// ADMIN LOGIN PAGE
-// ======================================================
-
 exports.showLogin = (req, res) => {
     res.render("admin/login", {
         title: "Admin Login",
@@ -16,18 +12,21 @@ exports.showLogin = (req, res) => {
     delete req.session.success;
 };
 
-// ======================================================
-// ADMIN LOGIN
-// ======================================================
-
 exports.login = async (req, res) => {
     try {
+
+        console.log("DB TEST:", {
+            host: process.env.DB_HOST,
+            port: process.env.DB_PORT,
+            user: process.env.DB_USER,
+            database: process.env.DB_NAME
+        });
+
         const { username, password } = req.body;
 
         if (!username || !password) {
             req.session.error =
                 "Please enter your admin username and password.";
-
             return res.redirect("/admin/login");
         }
 
@@ -48,10 +47,6 @@ exports.login = async (req, res) => {
 
         const user = users[0];
 
-        // ==================================================
-        // CHECK ACCOUNT STATUS
-        // ==================================================
-
         if (!user.is_active) {
             req.session.error =
                 "Your account is inactive. Please contact the administrator.";
@@ -59,20 +54,12 @@ exports.login = async (req, res) => {
             return res.redirect("/admin/login");
         }
 
-        // ==================================================
-        // CHECK ADMIN ROLE
-        // ==================================================
-
         if (user.role !== "admin") {
             req.session.error =
                 "You do not have administrator access.";
 
             return res.redirect("/admin/login");
         }
-
-        // ==================================================
-        // CHECK PASSWORD
-        // ==================================================
 
         const passwordMatch = await bcrypt.compare(
             password,
@@ -85,10 +72,6 @@ exports.login = async (req, res) => {
 
             return res.redirect("/admin/login");
         }
-
-        // ==================================================
-        // CREATE ADMIN SESSION
-        // ==================================================
 
         req.session.user = {
             id: user.id,
@@ -115,16 +98,8 @@ exports.login = async (req, res) => {
     }
 };
 
-// ======================================================
-// ADMIN DASHBOARD
-// ======================================================
-
 exports.dashboard = async (req, res) => {
     try {
-
-        // ==================================================
-        // TICKET STATISTICS
-        // ==================================================
 
         const [statsRows] = await db.execute(`
             SELECT
@@ -138,10 +113,6 @@ exports.dashboard = async (req, res) => {
 
         const stats = statsRows[0];
 
-        // ==================================================
-        // RECENT TICKETS
-        // ==================================================
-
         const [tickets] = await db.execute(`
             SELECT
                 t.*,
@@ -154,10 +125,6 @@ exports.dashboard = async (req, res) => {
             ORDER BY t.updated_at DESC
             LIMIT 50
         `);
-
-        // ==================================================
-        // USERS
-        // ==================================================
 
         const [users] = await db.execute(`
             SELECT
@@ -173,10 +140,6 @@ exports.dashboard = async (req, res) => {
             ORDER BY created_at DESC
         `);
 
-        // ==================================================
-        // ADMIN NOTIFICATIONS
-        // ==================================================
-
         const [notifications] = await db.execute(
             `
             SELECT *
@@ -188,19 +151,11 @@ exports.dashboard = async (req, res) => {
             [req.session.user.id]
         );
 
-        // ==================================================
-        // FLASH MESSAGES
-        // ==================================================
-
         const success = req.session.success || null;
         const error = req.session.error || null;
 
         delete req.session.success;
         delete req.session.error;
-
-        // ==================================================
-        // RENDER ADMIN DASHBOARD
-        // ==================================================
 
         res.render("admin/dashboard", {
             title: "Admin Dashboard",
@@ -222,17 +177,9 @@ exports.dashboard = async (req, res) => {
     }
 };
 
-// ======================================================
-// TOGGLE USER STATUS
-// ======================================================
-
 exports.toggleUserStatus = async (req, res) => {
     try {
         const userId = req.params.id;
-
-        // ==================================================
-        // FIND USER
-        // ==================================================
 
         const [users] = await db.execute(
             `
@@ -255,20 +202,12 @@ exports.toggleUserStatus = async (req, res) => {
 
         const user = users[0];
 
-        // ==================================================
-        // PREVENT ADMIN FROM DEACTIVATING THEMSELVES
-        // ==================================================
-
         if (user.id === req.session.user.id) {
             req.session.error =
                 "You cannot deactivate your own administrator account.";
 
             return res.redirect("/admin");
         }
-
-        // ==================================================
-        // TOGGLE STATUS
-        // ==================================================
 
         const newStatus = user.is_active ? 0 : 1;
 
@@ -280,10 +219,6 @@ exports.toggleUserStatus = async (req, res) => {
             `,
             [newStatus, userId]
         );
-
-        // ==================================================
-        // SUCCESS MESSAGE
-        // ==================================================
 
         if (newStatus === 1) {
             req.session.success =
@@ -305,17 +240,9 @@ exports.toggleUserStatus = async (req, res) => {
     }
 };
 
-// ======================================================
-// VIEW TICKET
-// ======================================================
-
 exports.viewTicket = async (req, res) => {
     try {
         const ticketId = req.params.id;
-
-        // ==================================================
-        // GET TICKET
-        // ==================================================
 
         const [tickets] = await db.execute(
             `
@@ -340,10 +267,6 @@ exports.viewTicket = async (req, res) => {
 
         const ticket = tickets[0];
 
-        // ==================================================
-        // GET TICKET UPDATES
-        // ==================================================
-
         const [updates] = await db.execute(
             `
             SELECT
@@ -358,10 +281,6 @@ exports.viewTicket = async (req, res) => {
             `,
             [ticketId]
         );
-
-        // ==================================================
-        // RENDER TICKET DETAILS
-        // ==================================================
 
         res.render("admin/ticket-details", {
             title: `Ticket ${ticket.ticket_number}`,
@@ -379,10 +298,6 @@ exports.viewTicket = async (req, res) => {
     }
 };
 
-// ======================================================
-// ADMIN REPLY TO TICKET
-// ======================================================
-
 exports.replyToTicket = async (req, res) => {
     try {
         const ticketId = req.params.id;
@@ -397,10 +312,6 @@ exports.replyToTicket = async (req, res) => {
                 `/admin/tickets/${ticketId}`
             );
         }
-
-        // ==================================================
-        // FIND TICKET
-        // ==================================================
 
         const [tickets] = await db.execute(
             `
@@ -419,10 +330,6 @@ exports.replyToTicket = async (req, res) => {
 
         const ticket = tickets[0];
 
-        // ==================================================
-        // ADD REPLY
-        // ==================================================
-
         await db.execute(
             `
             INSERT INTO ticket_updates
@@ -437,10 +344,6 @@ exports.replyToTicket = async (req, res) => {
             ]
         );
 
-        // ==================================================
-        // UPDATE TICKET STATUS
-        // ==================================================
-
         await db.execute(
             `
             UPDATE tickets
@@ -451,10 +354,6 @@ exports.replyToTicket = async (req, res) => {
             `,
             [ticketId]
         );
-
-        // ==================================================
-        // NOTIFY USER
-        // ==================================================
 
         await db.execute(
             `
@@ -489,10 +388,6 @@ exports.replyToTicket = async (req, res) => {
     }
 };
 
-// ======================================================
-// UPDATE TICKET
-// ======================================================
-
 exports.updateTicket = async (req, res) => {
     try {
         const ticketId = req.params.id;
@@ -504,10 +399,6 @@ exports.updateTicket = async (req, res) => {
         } = req.body;
 
         const adminId = req.session.user.id;
-
-        // ==================================================
-        // FIND TICKET
-        // ==================================================
 
         const [tickets] = await db.execute(
             `
@@ -526,10 +417,6 @@ exports.updateTicket = async (req, res) => {
 
         const ticket = tickets[0];
 
-        // ==================================================
-        // UPDATE TICKET
-        // ==================================================
-
         await db.execute(
             `
             UPDATE tickets
@@ -545,10 +432,6 @@ exports.updateTicket = async (req, res) => {
                 ticketId
             ]
         );
-
-        // ==================================================
-        // ADD UPDATE NOTE
-        // ==================================================
 
         if (note && note.trim()) {
             await db.execute(
@@ -566,10 +449,6 @@ exports.updateTicket = async (req, res) => {
             );
         }
 
-        // ==================================================
-        // NOTIFY TICKET OWNER
-        // ==================================================
-
         await db.execute(
             `
             INSERT INTO notifications
@@ -583,10 +462,6 @@ exports.updateTicket = async (req, res) => {
                 `Your ticket ${ticket.ticket_number} was updated by the Service Desk.`
             ]
         );
-
-        // ==================================================
-        // SUCCESS
-        // ==================================================
 
         req.session.success =
             `Ticket ${ticket.ticket_number} updated successfully.`;

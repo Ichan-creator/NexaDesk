@@ -1,15 +1,7 @@
-/* =========================================
-   ADMIN TICKET DETAILS
-========================================= */
-
 .admin-ticket-page {
     min-height: 100vh;
     background: #f5f7fb;
 }
-
-/* ================================
-   HEADER
-================================ */
 
 .ticket-details-header {
     display: flex;
@@ -48,19 +40,11 @@
     background: #f9fafb;
 }
 
-/* ================================
-   MAIN GRID
-================================ */
-
 .ticket-details-grid {
     display: grid;
     grid-template-columns: 2fr 1fr;
     gap: 22px;
 }
-
-/* ================================
-   CARD
-================================ */
 
 .ticket-card {
     background: #ffffff;
@@ -76,10 +60,6 @@
     font-size: 18px;
     color: #111827;
 }
-
-/* ================================
-   TICKET INFORMATION
-================================ */
 
 .ticket-info-grid {
     display: grid;
@@ -105,10 +85,6 @@
     font-weight: 500;
 }
 
-/* ================================
-   MESSAGE
-================================ */
-
 .original-message {
     background: #f9fafb;
     border: 1px solid #e5e7eb;
@@ -118,10 +94,6 @@
     line-height: 1.7;
     white-space: pre-wrap;
 }
-
-/* ================================
-   CONVERSATION
-================================ */
 
 .conversation {
     display: flex;
@@ -176,10 +148,6 @@
     white-space: pre-wrap;
 }
 
-/* ================================
-   REPLY FORM
-================================ */
-
 .reply-form textarea {
     width: 100%;
     min-height: 150px;
@@ -220,10 +188,6 @@
 .reply-button:hover {
     background: #1d4ed8;
 }
-
-/* ================================
-   SIDE INFORMATION
-================================ */
 
 .ticket-side-card {
     background: #ffffff;
@@ -266,10 +230,6 @@
     font-size: 13px;
     color: #6b7280;
 }
-
-/* ================================
-   MOBILE
-================================ */
 
 @media (max-width: 900px) {
     .ticket-details-grid {
