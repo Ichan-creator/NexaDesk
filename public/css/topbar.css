@@ -91,9 +91,29 @@
 }
 
 .topbar-user {
-  display: flex;
-  align-items: center;
-  gap: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.topbar-user-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    line-height: 1.2;
+}
+
+.topbar-user-info strong {
+    font-size: 14px;
+    font-weight: 600;
+    color: #1f2937;
+}
+
+.topbar-user-info span {
+    margin-top: 3px;
+    font-size: 12px;
+    font-weight: 400;
+    color: #6b7280;
 }
 
 .topbar-avatar {

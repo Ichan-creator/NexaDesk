@@ -1,9 +1,9 @@
-```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>NexaDesk | Create Account</title>
 
   <link rel="stylesheet" href="/css/base.css">
@@ -20,6 +20,7 @@
 
 <div class="auth-page">
 
+  <!-- Brand Section -->
   <section class="auth-brand">
 
     <h1>Nexa<span>Desk</span></h1>
@@ -50,6 +51,8 @@
 
   </section>
 
+
+  <!-- Register Section -->
   <section class="auth-panel">
 
     <div class="auth-card">
@@ -59,11 +62,14 @@
         <p>Register your NexaDesk account.</p>
       </div>
 
+
+      <!-- Error Message -->
       <% if (error) { %>
         <div class="alert alert-error">
           <%= error %>
         </div>
       <% } %>
+
 
       <form
         action="/register"
@@ -71,35 +77,32 @@
         id="registerForm"
       >
 
+        <!-- Full Name -->
         <div class="form-group">
-          <label for="full_name">Full Name</label>
+
+          <label for="full_name">
+            Full Name
+          </label>
 
           <input
             type="text"
             id="full_name"
             name="full_name"
             class="form-control"
-            placeholder="Full name"
+            placeholder="Enter your full name"
+            autocomplete="name"
             required
           >
+
         </div>
 
-        <div class="form-group">
-          <label for="username">Username</label>
 
-          <input
-            type="text"
-            id="username"
-            name="username"
-            class="form-control"
-            placeholder="Enter your username"
-            minlength="3"
-            required
-          >
-        </div>
-
+        <!-- Email -->
         <div class="form-group">
-          <label for="register-email">Email Address</label>
+
+          <label for="register-email">
+            Email Address
+          </label>
 
           <input
             type="email"
@@ -107,12 +110,19 @@
             name="email"
             class="form-control"
             placeholder="you@example.com"
+            autocomplete="email"
             required
           >
+
         </div>
 
+
+        <!-- Department -->
         <div class="form-group">
-          <label for="department">Department</label>
+
+          <label for="department">
+            Department
+          </label>
 
           <select
             id="department"
@@ -120,22 +130,62 @@
             class="form-control"
             required
           >
-            <option value="">Select department</option>
-            <option>Business Development</option>
-            <option>Finance</option>
-            <option>Human Resources</option>
-            <option>Information Technology</option>
-            <option>Marketing</option>
-            <option>QMS</option>
-            <option>Regulatory</option>
-            <option>Sales</option>
-            <option>Trade</option>
-            <option>Vaccine</option>
+
+            <option value="">
+              Select department
+            </option>
+
+            <option value="Business Development">
+              Business Development
+            </option>
+
+            <option value="Finance">
+              Finance
+            </option>
+
+            <option value="Human Resources">
+              Human Resources
+            </option>
+
+            <option value="Information Technology">
+              Information Technology
+            </option>
+
+            <option value="Marketing">
+              Marketing
+            </option>
+
+            <option value="QMS">
+              QMS
+            </option>
+
+            <option value="Regulatory">
+              Regulatory
+            </option>
+
+            <option value="Sales">
+              Sales
+            </option>
+
+            <option value="Trade">
+              Trade
+            </option>
+
+            <option value="Vaccine">
+              Vaccine
+            </option>
+
           </select>
+
         </div>
 
+
+        <!-- Password -->
         <div class="form-group">
-          <label for="register-password">Password</label>
+
+          <label for="register-password">
+            Password
+          </label>
 
           <input
             type="password"
@@ -144,12 +194,19 @@
             class="form-control"
             placeholder="Minimum 8 characters"
             minlength="8"
+            autocomplete="new-password"
             required
           >
+
         </div>
 
+
+        <!-- Confirm Password -->
         <div class="form-group">
-          <label for="confirm_password">Confirm Password</label>
+
+          <label for="confirm_password">
+            Confirm Password
+          </label>
 
           <input
             type="password"
@@ -158,20 +215,35 @@
             class="form-control"
             placeholder="Confirm your password"
             minlength="8"
+            autocomplete="new-password"
             required
           >
+
         </div>
 
-        <button type="submit" class="btn btn-primary" style="width:100%;">
+
+        <!-- Create Account Button -->
+        <button
+          type="submit"
+          class="btn btn-primary"
+          style="width:100%;"
+        >
           <i class="fa-solid fa-user-plus"></i>
           Create Account
         </button>
 
       </form>
 
+
+      <!-- Login Link -->
       <div class="auth-footer">
+
         Already have an account?
-        <a href="/login">Sign in</a>
+
+        <a href="/login">
+          Sign in
+        </a>
+
       </div>
 
     </div>
@@ -180,8 +252,8 @@
 
 </div>
 
+
 <script src="/js/auth.js"></script>
 
 </body>
 </html>
-```

@@ -243,28 +243,21 @@ type="button"
   class="topbar-icon"
   aria-label="Notifications"
 >
-
   <i class="fa-regular fa-bell"></i>
-
   <span class="notification-dot"></span>
-
 </a>
-
 
 <div class="topbar-user">
 
   <div class="topbar-avatar">
-
     <%= user.fullName
       .split(" ")
       .map(name => name[0])
-      .slice(0,2)
+      .slice(0, 2)
       .join("")
       .toUpperCase()
     %>
-
   </div>
-
 
   <div class="topbar-user-info">
 
