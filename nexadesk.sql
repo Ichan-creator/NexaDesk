@@ -1,3 +1,7 @@
+CREATE DATABASE IF NOT EXISTS nexadesk
+CHARACTER SET utf8mb4
+COLLATE utf8mb4_unicode_ci;
+
 USE nexadesk;
 
 CREATE TABLE IF NOT EXISTS users (
