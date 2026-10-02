@@ -2,28 +2,21 @@ const express = require("express");
 
 const router = express.Router();
 
-const notificationController =
-  require("../controllers/notificationController");
-
-const { requireLogin } =
-  require("../middleware/authMiddleware");
+const notificationController = require("../controllers/notificationController");
 
 router.get(
-  "/",
-  requireLogin,
-  notificationController.list
+    "/",
+    notificationController.list
 );
 
 router.post(
-  "/:id/read",
-  requireLogin,
-  notificationController.markAsRead
+    "/:id/read",
+    notificationController.markAsRead
 );
 
 router.post(
-  "/read-all",
-  requireLogin,
-  notificationController.markAllAsRead
+    "/read-all",
+    notificationController.markAllAsRead
 );
 
 module.exports = router;
